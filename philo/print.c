@@ -23,7 +23,7 @@ void	print_dinner_data(t_dining_setup *dinner_data)
 	printf("start dinner: %ld\n", dinner_data->start_dinner);
 }
 
-void	print_philo_data(t_philo *philo, t_dining_setup	*dinner_data)
+/*void	print_philo_data(t_philo *philo, t_dining_setup	*dinner_data)
 {
 	int	philos;
 
@@ -33,6 +33,7 @@ void	print_philo_data(t_philo *philo, t_dining_setup	*dinner_data)
 		print_dinner_data(philo->dinner_info);
 	}
 }
+*/
 
 int	safe_print(t_philo *philo, pthread_mutex_t	*mutex, int flag)
 {
@@ -42,6 +43,7 @@ int	safe_print(t_philo *philo, pthread_mutex_t	*mutex, int flag)
 		if (pthread_mutex_lock(philo->mutexes->print_eat) != 0)
 			return (-1);
 		printf("%lu %i is eating\n", get_time(), philo->index);
+		philo->number_of_meals += 1;
 		if (pthread_mutex_unlock(philo->mutexes->print_eat) != 0)
 			return (-1);
 	}

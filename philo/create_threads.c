@@ -22,7 +22,9 @@ void	*routine(void *arg)
 		if (check_philo_state(philo) != -1)
 		{
 			if (!philo_is_dead(philo))
+			{
 				process_philo_thinking(philo);
+			}
 		}
 		if (check_philo_state(philo) != -1)
 		{
@@ -66,20 +68,12 @@ int initialize_threads(t_philo *philo, t_dining_setup	*dinner_data)
 
 int	philo_is_dead(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->monitor->monitor_dead);
-	if (philo->monitor->philo_is_dead == 1)
+	if (check_philo_state(philo) == -1)
+		return (1);
+	if (philo->number_of_meals == 1)
 	{
-		pthread_mutex_unlock(&philo->monitor->monitor_dead);
-		return(1);
-	}
-	pthread_mutex_unlock(&philo->monitor->monitor_dead);
-	if (philo->number_of_meals == philo->dinner_info->number_of_meals)
-	{
-		//printf("%i \n", philo->dinner_info->number_of_meals);
-		//printf("%li\n", philo->dinner_info->start_dinner - philo->last_meal);
-		//printf("%i \n", philo->number_of_meals);
-		printf("ta morto\n");
 		pthread_mutex_lock(&philo->monitor->notice_dead);
+		printf("ta morto\n");
 		philo->monitor->philo_is_dead = 1;
 		pthread_mutex_unlock(&philo->monitor->notice_dead);
 		return (1);
