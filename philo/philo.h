@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/04 21:35:13 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/08 17:08:23 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ typedef struct s_monitor
 	int				philo_is_dead;
 	pthread_mutex_t	monitor_dead;
 	pthread_mutex_t	notice_dead;
+	pthread_mutex_t	flag;
+	
 }	t_monitor;
 
 typedef struct s_philo

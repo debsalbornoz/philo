@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:08:06 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/04 21:41:34 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/08 17:14:55 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ t_philo *initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo, pthr
 	}
 	if (safe_mutex_init(&monitor->notice_dead) == -1)
 		printf("b\n");
+	if (safe_mutex_init(&monitor->flag) == -1)
+		return (NULL);
 	return(philo);
 }
 

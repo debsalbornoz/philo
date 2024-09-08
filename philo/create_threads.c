@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/04 21:33:36 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/08 17:00:23 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,22 @@ void	*routine(void *arg)
 		}
 		if (check_philo_state(philo) != -1)
 		{
-			if (philo->index % 2 == 0)
-				process_even_philosopher_eating(philo);
-			else
-				process_odd_philosopher_eating(philo);
+			if (!philo_is_dead(philo))
+			{
+				if (philo->index % 2 == 0)
+					process_even_philosopher_eating(philo);
+				else
+				{
+					if (!philo_is_dead(philo))
+						process_odd_philosopher_eating(philo);
+				}
+			}
 		}
 		if (check_philo_state(philo) != -1)
-			process_philo_sleeping(philo);
+		{
+			if(!philo_is_dead(philo))
+				process_philo_sleeping(philo);
+		}
 	}
 	return (NULL);
 }
@@ -72,15 +81,20 @@ int	philo_is_dead(t_philo *philo)
 		return (1);
 	if (philo->number_of_meals == 1)
 	{
-		pthread_mutex_lock(&philo->monitor->notice_dead);
-		printf("ta morto\n");
-		philo->monitor->philo_is_dead = 1;
-		pthread_mutex_unlock(&philo->monitor->notice_dead);
-		return (1);
+		if (pthread_mutex_lock(&philo->monitor->monitor_dead) == 0)
+		{
+			printf("ta morto\n");
+			if (pthread_mutex_lock(&philo->monitor->notice_dead) == 0)
+				philo->monitor->philo_is_dead = 1;
+			pthread_mutex_unlock(&philo->monitor->notice_dead);
+			pthread_mutex_unlock(&philo->monitor->monitor_dead);
+			return (1);
+		}
 	}
 	else
 	{
 		printf("ta vivo\n");
 		return (0);
 	}
+	return (0);
 }
