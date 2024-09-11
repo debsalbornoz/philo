@@ -12,18 +12,16 @@
 
 #include "philo.h"
 
-int take_fork(t_philo *philo, pthread_mutex_t *mutex, int flag)
+int take_fork(t_philo *philo, pthread_mutex_t *fork)
 {
-	(void)flag;
-	if (!safe_mutex_lock(mutex))
-		return (-1);
-	else
+	if (safe_mutex_lock(fork))
 	{
 		safe_print_eat(philo, TAKING_FORK);
+		safe_mutex_unlock(fork);
+		return (1);
 	}
-	if (safe_mutex_unlock(mutex) != 0)
-		return (-1);
-	return (flag);
+	else
+		return (0);
 }
 
 
@@ -36,12 +34,12 @@ void	process_even_philosopher_eating(t_philo *philo)
 	usleep(3000);
 	if (check_philo_state(philo) != -1)
 	{
-		if (take_fork(philo, philo->left_fork, flag) != -1)
+		if (take_fork(philo, philo->left_fork))
 		{
 			flag+=1;
 			if (check_philo_state(philo) != -1)
 			{
-				if (!philo_is_dead(philo) && take_fork(philo, philo->right_fork, flag) != -1)
+				if (!philo_is_dead(philo) && take_fork(philo, philo->right_fork))
 				{
 					flag +=1;
 					if (flag == 2 && check_philo_state(philo) != -1)
@@ -57,6 +55,7 @@ void	process_even_philosopher_eating(t_philo *philo)
 	}
 }
 
+
 void	process_odd_philosopher_eating(t_philo *philo)
 {
 	int	flag;
@@ -66,12 +65,12 @@ void	process_odd_philosopher_eating(t_philo *philo)
 	usleep(3000);
 	if (check_philo_state(philo) != -1)
 	{
-		if (take_fork(philo, philo->right_fork, flag) != -1)
+		if (take_fork(philo, philo->right_fork))
 		{
 			flag+=1;
 			if (check_philo_state(philo) != -1)
 			{
-				if (!philo_is_dead(philo) && take_fork(philo, philo->left_fork, flag) != -1)
+				if (!philo_is_dead(philo) && take_fork(philo, philo->left_fork))
 				{
 					flag +=1;
 					if (flag == 2 && check_philo_state(philo) != -1)

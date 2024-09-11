@@ -29,7 +29,6 @@ void	safe_print_eat(t_philo *philo, int action)
 		if (!philo_is_dead(philo) && safe_mutex_lock(philo->mutexes->print_take_fork))
 		{
 			printf("%lu %i is taking fork\n", get_time(), philo->index);
-			philo->number_of_meals += 1;
 			safe_mutex_unlock(philo->mutexes->print_take_fork);
 		}
 	}
