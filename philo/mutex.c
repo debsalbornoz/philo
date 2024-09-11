@@ -16,7 +16,7 @@ int	safe_mutex_lock(pthread_mutex_t *mutex)
 {
 	if (pthread_mutex_lock(mutex) != 0)
 	{
-		printf("Error locking mutex\n");
+		ft_putstr_fd("Error locking mutex\n", 2);
 		return (0);
 	}
 	return (1);
@@ -26,7 +26,7 @@ int	safe_mutex_unlock(pthread_mutex_t *mutex)
 {
 	if (pthread_mutex_unlock(mutex) != 0)
 	{
-		printf("Error unlocking mutex\n");
+		ft_putstr_fd("Error unlocking mutex\n", 2);
 		return (-1);
 	}
 	return (0);
@@ -36,7 +36,7 @@ int	safe_mutex_init(pthread_mutex_t *mutex)
 {
 	if (pthread_mutex_init(mutex, NULL) != 0)
 	{
-		printf("Error initing mutex\n");
+		ft_putstr_fd("Error initing mutex\n", 2);
 		return (0);
 	}
 	return (1);
@@ -46,7 +46,7 @@ int	safe_mutex_destroy(pthread_mutex_t *mutex)
 {
 	if (pthread_mutex_destroy(mutex) != 0)
 	{
-		printf("Error destroying mutex\n");
+		ft_putstr_fd("Error destroying mutex\n", 2);
 		return (-1);
 	}
 	return (0);

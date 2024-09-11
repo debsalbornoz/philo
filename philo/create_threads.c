@@ -30,6 +30,8 @@ void	*routine(void *arg)
 		}
 			if(!philo_is_dead(philo))
 				process_philo_sleeping(philo);
+		if (philo_is_dead(philo))
+			break;
 	}
 	return (NULL);
 }
@@ -63,39 +65,33 @@ int initialize_threads(t_philo *philo, t_dining_setup	*dinner_data)
 
 int	philo_is_dead(t_philo *philo)
 {
-	if (pthread_mutex_lock(&philo->monitor->monitor_dead) == 0)
+	if (safe_mutex_lock(&philo->monitor->monitor_dead))
 	{
 		if (philo->monitor->philo_is_dead == 1)
 		{
-			pthread_mutex_unlock(&philo->monitor->monitor_dead);
+			safe_mutex_unlock(&philo->monitor->monitor_dead);
 			return (1);
 		}
-		else
-			pthread_mutex_unlock(&philo->monitor->monitor_dead);
+		safe_mutex_unlock(&philo->monitor->monitor_dead);
 	}
 	if (philo->number_of_meals == 1)
 	{
-		if (pthread_mutex_lock(&philo->monitor->monitor_dead) == 0)
+		if (safe_mutex_lock(&philo->monitor->notice_dead))
 		{
-			printf("ta morto\n");
-			if (pthread_mutex_lock(&philo->monitor->notice_dead) == 0)
-				philo->monitor->philo_is_dead = 1;
-			pthread_mutex_unlock(&philo->monitor->notice_dead);
+			philo->monitor->philo_is_dead = 1;
+			printf("%lu %i is dead \n", get_time(), philo->index);
 			pthread_mutex_unlock(&philo->monitor->monitor_dead);
 			return (1);
 		}
 	}
-		if (pthread_mutex_lock(&philo->monitor->monitor_dead) == 0)
+	if (safe_mutex_lock(&philo->monitor->monitor_dead))
+	{
+		if (philo->monitor->philo_is_dead == 1)
 		{
-			if (philo->monitor->philo_is_dead == 1)
-			{
-				pthread_mutex_unlock(&philo->monitor->monitor_dead);
-				return (1);
-			}
-			else
-				pthread_mutex_unlock(&philo->monitor->monitor_dead);
+			safe_mutex_unlock(&philo->monitor->monitor_dead);
+			return (1);
 		}
-		else
-			printf("ta vivo\n");
-		return (0);
+		safe_mutex_unlock(&philo->monitor->monitor_dead);
+	}
+	return (0);
 }

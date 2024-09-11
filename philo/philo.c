@@ -61,6 +61,8 @@ void	process_philo_thinking(t_philo	*philo)
 {
 	if (!philo_is_dead(philo))
 		safe_print(philo, THINKING);
+	else
+		return ;
 }
 
 void	process_philo_sleeping(t_philo *philo)
