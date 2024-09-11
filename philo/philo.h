@@ -104,7 +104,7 @@ void				set_allocation_error(void);
 //print.c
 void				print_dinner_data(t_dining_setup *dinner_data);
 void				print_philo_data(t_philo *philo, t_dining_setup	*dinner_data);
-int					safe_print(t_philo *philo, pthread_mutex_t	*mutex, int flag);
+void				safe_print(t_philo *philo, int action);
 //create_threads.c
 int					initialize_threads(t_philo *philo, t_dining_setup	*dinner_data);
 long int			get_time(void);

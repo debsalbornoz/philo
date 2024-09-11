@@ -46,7 +46,7 @@ void	process_even_philosopher_eating(t_philo *philo)
 					flag +=1;
 					if (flag == 2 && check_philo_state(philo) != -1)
 					{
-						safe_print(philo, philo->mutexes->print_eat, EATING);
+						safe_print(philo, EATING);
 					}
 					//pthread_mutex_unlock(philo->right_fork);
 				}
@@ -76,7 +76,7 @@ void	process_odd_philosopher_eating(t_philo *philo)
 					flag +=1;
 					if (flag == 2 && check_philo_state(philo) != -1)
 					{
-						safe_print(philo, philo->mutexes->print_eat, EATING);
+						safe_print(philo, EATING);
 						//pthread_mutex_unlock(philo->left_fork);
 					}
 					//pthread_mutex_unlock(philo->left_fork);
@@ -92,17 +92,15 @@ void	process_odd_philosopher_eating(t_philo *philo)
 void	process_philo_thinking(t_philo	*philo)
 {
 	if (check_philo_state(philo) != -1)
-		safe_print(philo, philo->mutexes->print_think, THINKING);
+		safe_print(philo, THINKING);
 }
 
 void	process_philo_sleeping(t_philo *philo)
 {
 	if (check_philo_state(philo) != -1)
 	{
-		if (safe_print(philo, philo->mutexes->print_sleep, SLEEPING) == -1)
-			return ;
-		else
-			usleep(philo->dinner_info->time_to_sleep);
+		safe_print(philo, SLEEPING);
+		usleep(philo->dinner_info->time_to_sleep);
 	}
 }
 

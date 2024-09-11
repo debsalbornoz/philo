@@ -35,33 +35,32 @@ void	print_dinner_data(t_dining_setup *dinner_data)
 }
 */
 
-int	safe_print(t_philo *philo, pthread_mutex_t	*mutex, int flag)
+void	safe_print(t_philo *philo, int action)
 {
-	(void)mutex;
-	if (flag == EATING)
+	if (action == EATING)
 	{
-		if (pthread_mutex_lock(philo->mutexes->print_eat) != 0)
-			return (-1);
-		printf("%lu %i is eating\n", get_time(), philo->index);
-		philo->number_of_meals += 1;
-		if (pthread_mutex_unlock(philo->mutexes->print_eat) != 0)
-			return (-1);
+		if (!philo_is_dead(philo) && safe_mutex_lock(philo->mutexes->print_eat) != -1)
+		{
+			printf("%lu %i is eating\n", get_time(), philo->index);
+			philo->number_of_meals += 1;
+			safe_mutex_unlock(philo->mutexes->print_eat);
+		}
 	}
-	else if (flag == SLEEPING)
+	if (action == SLEEPING)
 	{
-		if (pthread_mutex_lock(philo->mutexes->print_sleep) != 0)
-			return (-1);
-		printf("%lu %i is sleeping\n", get_time(), philo->index);
-		if (pthread_mutex_unlock(philo->mutexes->print_sleep) != 0)
-			return (-1);
+		if (!philo_is_dead(philo) && safe_mutex_lock(philo->mutexes->print_sleep) != -1)
+		{
+			printf("%lu %i is sleeping\n", get_time(), philo->index);
+			usleep(3000);
+			safe_mutex_unlock(philo->mutexes->print_sleep);
+		}
 	}
-	else if (flag == THINKING)
+	if (action == THINKING)
 	{
-		if (pthread_mutex_lock(philo->mutexes->print_think) != 0)
-			return (-1);
-		printf("%lu %i is thinking\n", get_time(), philo->index);
-		if (pthread_mutex_unlock(philo->mutexes->print_think) != 0)
-			return (-1);
+		if (!philo_is_dead(philo) && safe_mutex_lock(philo->mutexes->print_think) != -1)
+		{
+			printf("%lu %i is thinking\n", get_time(), philo->index);
+			safe_mutex_unlock(philo->mutexes->print_think);
+		}
 	}
-	return (0);
 }
