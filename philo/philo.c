@@ -14,7 +14,7 @@
 
 int take_fork(t_philo *philo, pthread_mutex_t *fork)
 {
-	if (safe_mutex_lock(fork))
+	if (!philo_is_dead(philo) && safe_mutex_lock(fork))
 	{
 		safe_print_eat(philo, TAKING_FORK);
 		safe_mutex_unlock(fork);
@@ -32,8 +32,7 @@ void	process_even_philosopher_eating(t_philo *philo)
 	{
 		if (!philo_is_dead(philo) && take_fork(philo, philo->right_fork))
 		{
-			if (!philo_is_dead(philo))
-				safe_print_eat(philo, EATING);
+			safe_print_eat(philo, EATING);
 			safe_mutex_unlock(philo->left_fork);
 			safe_mutex_unlock(philo->right_fork);
 		}
@@ -49,8 +48,7 @@ void	process_odd_philosopher_eating(t_philo *philo)
 	{
 		if (!philo_is_dead(philo) && take_fork(philo, philo->left_fork))
 		{
-			if (!philo_is_dead(philo))
-				safe_print_eat(philo, EATING);
+			safe_print_eat(philo, EATING);
 			safe_mutex_unlock(philo->right_fork);
 			safe_mutex_unlock(philo->left_fork);
 		}

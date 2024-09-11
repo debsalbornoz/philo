@@ -22,6 +22,7 @@ void	print_dinner_data(t_dining_setup *dinner_data)
 	printf("number of meals: %d\n", dinner_data->number_of_meals);
 	printf("start dinner: %ld\n", dinner_data->start_dinner);
 }
+
 void	safe_print_eat(t_philo *philo, int action)
 {
 	if (action == TAKING_FORK)

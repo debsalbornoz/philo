@@ -37,6 +37,7 @@ int	validate_args(int argc, char **argv)
 		return (FALSE);
 	return (TRUE);
 }
+
 int	max_n_philo(char *philos)
 {
 	if (ft_atol(philos) >  200)
@@ -46,6 +47,7 @@ int	max_n_philo(char *philos)
 	}
 	return (0);
 }
+
 int	is_numeric_arg(const char *str)
 {
 	while (*str)
