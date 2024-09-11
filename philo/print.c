@@ -23,20 +23,16 @@ void	print_dinner_data(t_dining_setup *dinner_data)
 	printf("start dinner: %ld\n", dinner_data->start_dinner);
 }
 
-/*void	print_philo_data(t_philo *philo, t_dining_setup	*dinner_data)
+void	safe_print_eat(t_philo *philo, int action)
 {
-	int	philos;
-
-	philos = dinner_data->philosophers;
+	if (action == TAKING_FORK)
 	{
-		printf("philosopher index : %i\n", philo->index);
-		print_dinner_data(philo->dinner_info);
+		if (!philo_is_dead(philo) && safe_mutex_lock(philo->mutexes->print_take_fork) != -1)
+		{
+			printf("%lu %d has taken a fork\n", get_time(), philo->index);
+			safe_mutex_unlock(philo->mutexes->print_take_fork);
+		}
 	}
-}
-*/
-
-void	safe_print(t_philo *philo, int action)
-{
 	if (action == EATING)
 	{
 		if (!philo_is_dead(philo) && safe_mutex_lock(philo->mutexes->print_eat) != -1)
@@ -46,6 +42,10 @@ void	safe_print(t_philo *philo, int action)
 			safe_mutex_unlock(philo->mutexes->print_eat);
 		}
 	}
+}
+
+void	safe_print(t_philo *philo, int action)
+{
 	if (action == SLEEPING)
 	{
 		if (!philo_is_dead(philo) && safe_mutex_lock(philo->mutexes->print_sleep) != -1)

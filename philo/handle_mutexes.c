@@ -24,6 +24,8 @@ int	initialize_mutexes(t_mutexes *mutexes)
 	if (pthread_mutex_init(mutexes->print_dead, NULL) != 0)
 		flag = 1;
 	if (pthread_mutex_init(mutexes->print_eat, NULL) != 0)
+		flag = 1;
+	if (pthread_mutex_init(mutexes->print_take_fork, NULL) != 0)
 		flag = 1;		
 	if (flag == 1)
 	{

@@ -19,7 +19,7 @@ int take_fork(t_philo *philo, pthread_mutex_t *mutex, int flag)
 		return (-1);
 	else
 	{
-		printf("%lu %d has taken a fork\n", get_time(), philo->index);
+		safe_print_eat(philo, TAKING_FORK);
 	}
 	if (safe_mutex_unlock(mutex) != 0)
 		return (-1);
@@ -46,7 +46,7 @@ void	process_even_philosopher_eating(t_philo *philo)
 					flag +=1;
 					if (flag == 2 && check_philo_state(philo) != -1)
 					{
-						safe_print(philo, EATING);
+						safe_print_eat(philo, EATING);
 					}
 					//pthread_mutex_unlock(philo->right_fork);
 				}

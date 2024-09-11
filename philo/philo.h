@@ -31,7 +31,8 @@ typedef struct s_monitor t_monitor;
 enum	actions {
 	EATING,
 	SLEEPING,
-	THINKING
+	THINKING,
+	TAKING_FORK
 
 };
 
@@ -83,6 +84,7 @@ typedef struct s_mutexes
 	pthread_mutex_t		print_think[1];
 	pthread_mutex_t		print_dead[1];
 	pthread_mutex_t		print_eat[1];
+	pthread_mutex_t		print_take_fork[1];
 }	t_mutexes;
 
 //init_data.c
@@ -105,6 +107,8 @@ void				set_allocation_error(void);
 void				print_dinner_data(t_dining_setup *dinner_data);
 void				print_philo_data(t_philo *philo, t_dining_setup	*dinner_data);
 void				safe_print(t_philo *philo, int action);
+void				safe_print_eat(t_philo *philo, int action);
+
 //create_threads.c
 int					initialize_threads(t_philo *philo, t_dining_setup	*dinner_data);
 long int			get_time(void);
