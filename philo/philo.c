@@ -15,7 +15,7 @@
 int take_fork(t_philo *philo, pthread_mutex_t *mutex, int flag)
 {
 	(void)flag;
-	if (safe_mutex_lock(mutex) != 0)
+	if (!safe_mutex_lock(mutex))
 		return (-1);
 	else
 	{
@@ -91,8 +91,12 @@ void	process_odd_philosopher_eating(t_philo *philo)
 
 void	process_philo_thinking(t_philo	*philo)
 {
+	printf("chega aqui? \n");
 	if (check_philo_state(philo) != -1)
+	{
+		printf("e aqui?\n");
 		safe_print(philo, THINKING);
+	}
 }
 
 void	process_philo_sleeping(t_philo *philo)

@@ -17,9 +17,9 @@ int	safe_mutex_lock(pthread_mutex_t *mutex)
 	if (pthread_mutex_lock(mutex) != 0)
 	{
 		printf("Error locking mutex\n");
-		return (-1);
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
 int	safe_mutex_unlock(pthread_mutex_t *mutex)
