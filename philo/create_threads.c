@@ -93,7 +93,10 @@ int	philo_is_dead(t_philo *philo)
 	}
 	else
 	{
-		printf("ta vivo\n");
+		if (check_philo_state(philo) == -1)
+			return (1);
+		else
+			printf("ta vivo\n");
 		return (0);
 	}
 	return (0);

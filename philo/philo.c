@@ -27,84 +27,48 @@ int take_fork(t_philo *philo, pthread_mutex_t *fork)
 
 void	process_even_philosopher_eating(t_philo *philo)
 {
-	int	flag;
-
-	flag = 0;
-
 	usleep(3000);
-	if (check_philo_state(philo) != -1)
+	if (!philo_is_dead(philo) && take_fork(philo, philo->left_fork))
 	{
-		if (take_fork(philo, philo->left_fork))
+		if (!philo_is_dead(philo) && take_fork(philo, philo->right_fork))
 		{
-			flag+=1;
-			if (check_philo_state(philo) != -1)
-			{
-				if (!philo_is_dead(philo) && take_fork(philo, philo->right_fork))
-				{
-					flag +=1;
-					if (flag == 2 && check_philo_state(philo) != -1)
-					{
-						safe_print_eat(philo, EATING);
-					}
-					//pthread_mutex_unlock(philo->right_fork);
-				}
-				else
-					pthread_mutex_unlock(philo->left_fork);
-			}
+			if (!philo_is_dead(philo))
+				safe_print_eat(philo, EATING);
+			safe_mutex_unlock(philo->left_fork);
+			safe_mutex_unlock(philo->right_fork);
 		}
+		else
+			safe_mutex_unlock(philo->left_fork);
 	}
 }
 
 
 void	process_odd_philosopher_eating(t_philo *philo)
 {
-	int	flag;
-
-	flag = 0;
-
-	usleep(3000);
-	if (check_philo_state(philo) != -1)
+	if (!philo_is_dead(philo) && take_fork(philo, philo->right_fork))
 	{
-		if (take_fork(philo, philo->right_fork))
+		if (!philo_is_dead(philo) && take_fork(philo, philo->left_fork))
 		{
-			flag+=1;
-			if (check_philo_state(philo) != -1)
-			{
-				if (!philo_is_dead(philo) && take_fork(philo, philo->left_fork))
-				{
-					flag +=1;
-					if (flag == 2 && check_philo_state(philo) != -1)
-					{
-						safe_print(philo, EATING);
-						//pthread_mutex_unlock(philo->left_fork);
-					}
-					//pthread_mutex_unlock(philo->left_fork);
-				}
-				else
-					pthread_mutex_unlock(philo->right_fork);
-			}
+			if (!philo_is_dead(philo))
+				safe_print_eat(philo, EATING);
+			safe_mutex_unlock(philo->right_fork);
+			safe_mutex_unlock(philo->left_fork);
 		}
+		else
+			safe_mutex_unlock(philo->right_fork);
 	}
 }
 
-
 void	process_philo_thinking(t_philo	*philo)
 {
-	printf("chega aqui? \n");
-	if (check_philo_state(philo) != -1)
-	{
-		printf("e aqui?\n");
+	if (!philo_is_dead(philo))
 		safe_print(philo, THINKING);
-	}
 }
 
 void	process_philo_sleeping(t_philo *philo)
 {
-	if (check_philo_state(philo) != -1)
-	{
+	if (!philo_is_dead(philo))
 		safe_print(philo, SLEEPING);
-		usleep(philo->dinner_info->time_to_sleep);
-	}
 }
 
 int	check_philo_state(t_philo *philo)

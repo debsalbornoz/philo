@@ -50,7 +50,7 @@ void	safe_print(t_philo *philo, int action)
 		if (!philo_is_dead(philo) && safe_mutex_lock(philo->mutexes->print_sleep))
 		{
 			printf("%lu %i is sleeping\n", get_time(), philo->index);
-			usleep(3000);
+			usleep(philo->dinner_info->time_to_sleep);
 			safe_mutex_unlock(philo->mutexes->print_sleep);
 		}
 	}
