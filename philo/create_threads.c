@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/08 17:00:23 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/11 20:25:09 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	philo_is_dead(t_philo *philo)
 		if (safe_mutex_lock(&philo->monitor->notice_dead))
 		{
 			philo->monitor->philo_is_dead = 1;
-			printf("%lu %i is dead \n", get_time(), philo->index);
+			printf("Is dead \n");
 			pthread_mutex_unlock(&philo->monitor->monitor_dead);
 			return (1);
 		}

@@ -1,7 +1,6 @@
 CC := gcc
 SA := --fsanitize=thread
 CFLAGS := -g3 -Wall -Wextra -Werror -pthread
-
 EXEC := philo
 SRCS := main.c validate_args.c init_data.c utils.c print.c create_threads.c forks.c handle_mutexes.c philo.c mutex.c
 OBJS := $(SRCS:.c=.o)

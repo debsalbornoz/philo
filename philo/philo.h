@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/08 17:08:23 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/11 20:30:17 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,7 @@ typedef struct s_dining_setup
 
 typedef struct s_mutexes
 {
-	pthread_mutex_t		print_sleep[1];
-	pthread_mutex_t		print_think[1];
-	pthread_mutex_t		print_dead[1];
-	pthread_mutex_t		print_eat[1];
-	pthread_mutex_t		print_take_fork[1];
+	pthread_mutex_t		print[1];
 }	t_mutexes;
 
 //init_data.c
