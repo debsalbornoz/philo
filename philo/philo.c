@@ -70,17 +70,3 @@ void	process_philo_sleeping(t_philo *philo)
 	if (!philo_is_dead(philo))
 		safe_print(philo, SLEEPING);
 }
-
-int	check_philo_state(t_philo *philo)
-{
-	int	flag;
-
-	flag = 0;
-	if (pthread_mutex_lock(&philo->monitor->monitor_dead) == 0)
-	{
-		if (philo->monitor->philo_is_dead == 1)
-		flag = -1;
-		pthread_mutex_unlock(&philo->monitor->monitor_dead);
-	}
-	return (flag);
-}

@@ -42,6 +42,7 @@ void	safe_print_eat(t_philo *philo, int action)
 		}
 	}
 }
+
 void	safe_print(t_philo *philo, int action)
 {
 
