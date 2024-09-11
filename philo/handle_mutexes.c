@@ -14,20 +14,9 @@
 
 int	initialize_mutexes(t_mutexes *mutexes)
 {
-	int	flag;
-
-	flag = 0;
-	if (pthread_mutex_init(mutexes->print_sleep, NULL) != 0)
-		flag = 1;
-	if (pthread_mutex_init(mutexes->print_think, NULL) != 0)
-		flag = 1;
-	if (pthread_mutex_init(mutexes->print_dead, NULL) != 0)
-		flag = 1;
-	if (pthread_mutex_init(mutexes->print_eat, NULL) != 0)
-		flag = 1;
-	if (pthread_mutex_init(mutexes->print_take_fork, NULL) != 0)
-		flag = 1;		
-	if (flag == 1)
+	if (!safe_mutex_init(mutexes->print_sleep) || !safe_mutex_init(mutexes->print_think)
+		|| !safe_mutex_init(mutexes->print_dead) || !safe_mutex_init(mutexes->print_eat) 
+		|| !safe_mutex_init(mutexes->print_take_fork))
 	{
 		ft_putstr_fd("Error initializing mutex\n", 2);
 		return (0);

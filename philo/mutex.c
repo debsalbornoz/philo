@@ -37,9 +37,9 @@ int	safe_mutex_init(pthread_mutex_t *mutex)
 	if (pthread_mutex_init(mutex, NULL) != 0)
 	{
 		printf("Error initing mutex\n");
-		return (-1);
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
 int	safe_mutex_destroy(pthread_mutex_t *mutex)

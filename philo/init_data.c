@@ -55,13 +55,8 @@ t_philo *initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo, pthr
 		philo[i].monitor = monitor;
 		i++;
 	}
-	if (safe_mutex_init(&monitor->monitor_dead) == -1)
-	{
-		printf("a\n");
-	}
-	if (safe_mutex_init(&monitor->notice_dead) == -1)
-		printf("b\n");
-	if (safe_mutex_init(&monitor->flag) == -1)
+	if (!safe_mutex_init(&monitor->monitor_dead) || !safe_mutex_init(&monitor->notice_dead) 
+		|| !safe_mutex_init(&monitor->flag))
 		return (NULL);
 	return(philo);
 }
