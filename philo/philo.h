@@ -98,13 +98,13 @@ t_philo 			*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
 
 //free_and_error.c
 void				set_allocation_error(void);
-
+void ft_itoa(long int n, char *str, size_t buffer_size);
 //print.c
 void				print_dinner_data(t_dining_setup *dinner_data);
 void				print_philo_data(t_philo *philo, t_dining_setup	*dinner_data);
 void				safe_print(t_philo *philo, int action);
 void				safe_print_eat(t_philo *philo, int action);
-
+void				print_actions(long int time, int philo_index, char *action);
 //create_threads.c
 int					initialize_threads(t_philo *philo, t_dining_setup	*dinner_data);
 long int			get_time(void);

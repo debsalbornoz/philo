@@ -30,8 +30,6 @@ void	*routine(void *arg)
 		}
 			if(!philo_is_dead(philo))
 				process_philo_sleeping(philo);
-		if (philo_is_dead(philo))
-			break;
 	}
 	return (NULL);
 }
@@ -79,7 +77,7 @@ int	philo_is_dead(t_philo *philo)
 		if (safe_mutex_lock(&philo->monitor->monitor_dead))
 		{
 			philo->monitor->philo_is_dead = 1;
-			printf("Is dead \n");
+			print_actions(get_time(), philo->index, " is dead");
 			pthread_mutex_unlock(&philo->monitor->monitor_dead);
 			return (1);
 		}
