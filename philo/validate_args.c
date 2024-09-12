@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_args.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 14:46:58 by codespace         #+#    #+#             */
-/*   Updated: 2024/08/30 19:48:36 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:38:05 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ int	validate_args(int argc, char **argv)
 
 int	max_n_philo(char *philos)
 {
-	if (ft_atol(philos) >  200)
+	if (ft_atol(philos) > 200)
 	{
 		ft_putstr_fd("Invalid number of philosophers : max number is 200\n", 2);
-			return (1);
+		return (1);
 	}
 	return (0);
 }

@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   create_threads.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/11 21:17:01 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/12 19:45:41 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+
 void	*routine(void *arg)
 {
 	t_philo			*philo;
-	
+
 	philo = (t_philo *)arg;
 	while (!philo_is_dead(philo))
 	{
@@ -24,17 +25,19 @@ void	*routine(void *arg)
 		if (!philo_is_dead(philo))
 		{
 			if (philo->index % 2 == 0)
-					process_even_philosopher_eating(philo);
+				process_even_philosopher_eating(philo);
 			else
 				process_odd_philosopher_eating(philo);
 		}
-			if(!philo_is_dead(philo))
-				process_philo_sleeping(philo);
+		if (!philo_is_dead(philo))
+			process_philo_sleeping(philo);
+		if (philo_is_dead(philo))
+			break ;
 	}
 	return (NULL);
 }
 
-int initialize_threads(t_philo *philo, t_dining_setup	*dinner_data)
+int	initialize_threads(t_philo *philo, t_dining_setup	*dinner_data)
 {
 	int			index;
 	int			i;
@@ -45,7 +48,8 @@ int initialize_threads(t_philo *philo, t_dining_setup	*dinner_data)
 	while (i < index)
 	{
 		indexes[i] = i;
-		if (pthread_create(&philo[i].philo, NULL, &routine, &philo[indexes[i]]) != 0)
+		if (pthread_create(&philo[i].philo, NULL,
+				&routine, &philo[indexes[i]]) != 0)
 		{
 			ft_putstr_fd("Error creating thread\n", 2);
 			return (0);
@@ -63,33 +67,33 @@ int initialize_threads(t_philo *philo, t_dining_setup	*dinner_data)
 
 int	philo_is_dead(t_philo *philo)
 {
-	if (safe_mutex_lock(&philo->monitor->monitor_dead))
+	if (safe_mutex_lock(&philo->monitor->check_death))
 	{
-		if (philo->monitor->philo_is_dead == 1)
+		if (philo->monitor->death_status == 1)
 		{
-			safe_mutex_unlock(&philo->monitor->monitor_dead);
+			safe_mutex_unlock(&philo->monitor->check_death);
 			return (1);
 		}
-		safe_mutex_unlock(&philo->monitor->monitor_dead);
+		safe_mutex_unlock(&philo->monitor->check_death);
 	}
 	if (philo->number_of_meals == 1)
 	{
-		if (safe_mutex_lock(&philo->monitor->monitor_dead))
+		if (safe_mutex_lock(&philo->monitor->check_death))
 		{
-			philo->monitor->philo_is_dead = 1;
+			philo->monitor->death_status = 1;
 			print_actions(get_time(), philo->index, " is dead");
-			pthread_mutex_unlock(&philo->monitor->monitor_dead);
+			pthread_mutex_unlock(&philo->monitor->check_death);
 			return (1);
 		}
 	}
-	if (safe_mutex_lock(&philo->monitor->monitor_dead))
+	if (safe_mutex_lock(&philo->monitor->check_death))
 	{
-		if (philo->monitor->philo_is_dead == 1)
+		if (philo->monitor->death_status == 1)
 		{
-			safe_mutex_unlock(&philo->monitor->monitor_dead);
+			safe_mutex_unlock(&philo->monitor->check_death);
 			return (1);
 		}
-		safe_mutex_unlock(&philo->monitor->monitor_dead);
+		safe_mutex_unlock(&philo->monitor->check_death);
 	}
 	return (0);
 }
