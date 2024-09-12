@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/11 20:25:09 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/11 21:17:01 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	*routine(void *arg)
 		{
 			if (philo->index % 2 == 0)
 					process_even_philosopher_eating(philo);
-				else
-					process_odd_philosopher_eating(philo);
+			else
+				process_odd_philosopher_eating(philo);
 		}
 			if(!philo_is_dead(philo))
 				process_philo_sleeping(philo);
@@ -76,7 +76,7 @@ int	philo_is_dead(t_philo *philo)
 	}
 	if (philo->number_of_meals == 1)
 	{
-		if (safe_mutex_lock(&philo->monitor->notice_dead))
+		if (safe_mutex_lock(&philo->monitor->monitor_dead))
 		{
 			philo->monitor->philo_is_dead = 1;
 			printf("Is dead \n");
