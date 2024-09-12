@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/12 19:46:03 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/12 20:09:37 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int					is_digit(char c);
 int					ft_strlen(char *str);
 void				ft_putstr_fd(const char *str, int fd);
 long int			ft_atol(const char *str);
-void	ft_itoa(long int n, char *str, size_t buffer_size);
+void				ft_itoa(long int n, char *str, size_t buffer_size, int is_negative);
 
 //validate_args.c
 int					validate_args(int argc, char **argv);
