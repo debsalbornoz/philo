@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:08:06 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/12 19:40:41 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/12 20:12:56 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ int	initialize_dinner_data(t_dining_setup *dinner_data, t_philo *philo,
 {
 	if (!initialize_forks(forks, dinner_data) 
 		|| !initialize_philo_data(dinner_data, philo, forks, monitor)
-		|| !initialize_threads(philo, dinner_data)
-		|| !init_monitor_data(monitor, philo))
+			|| !init_monitor_data(monitor, philo)
+		|| !initialize_threads(philo, dinner_data))
+
 		return (0);
 	else
 		return (1);
