@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/12 20:09:37 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/12 21:21:26 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,16 @@ enum	e_mutex {
 	DESTROY
 };
 
+typedef struct s_data
+{
+	t_monitor		*monitor;
+	t_philo			*philo;
+	t_dining_setup	*dinner_data;
+} t_data;
+
 typedef struct s_monitor
 {
+	pthread_t		monitor;
 	t_philo			*philos;
 	int				death_status;
 	pthread_mutex_t	check_death;
@@ -76,25 +84,26 @@ typedef struct s_dining_setup
 	long int				start_dinner;
 	long int				end_dinner;
 	pthread_mutex_t			print_status[1];
+	pthread_mutex_t			n_meals[1];
 }	t_dining_setup;
 
 
 //init_data.c
 
-t_monitor	*init_monitor_data(t_monitor *monitor, t_philo *philo);
-long int	get_time(void);
-t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
-	pthread_mutex_t *forks, t_monitor *monitor);
-int	initialize_dinner_data(t_dining_setup *dinner_data, t_philo *philo,
-	pthread_mutex_t *forks, t_monitor *monitor);
-void	configure_dining_parameters(t_dining_setup *dinner_data,
-char **argv, int argc);
-
+t_monitor		*init_monitor_data(t_monitor *monitor, t_philo *philo);
+long int		get_time(void);
+t_philo			*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
+					pthread_mutex_t *forks, t_monitor *monitor);
+int				initialize_dinner_data(t_dining_setup *dinner_data, t_philo *philo,
+					pthread_mutex_t *forks, t_monitor *monitor);
+void			configure_dining_parameters(t_dining_setup *dinner_data,
+					char **argv, int argc);
+t_data			*initialize_data(t_data *data, t_dining_setup *dinner_data, t_philo *philo, t_monitor *monitor);
 //create_threads.c
 
-int	philo_is_dead(t_philo *philo);
-int	initialize_threads(t_philo *philo, t_dining_setup	*dinner_data);
-void	*routine(void *arg);
+int				philo_is_dead(t_philo *philo);
+int				initialize_threads(t_data *data, t_philo *philo, t_dining_setup	*dinner_data, t_monitor *monitor);
+void			*routine(void *arg);
 
 //mutex.c
 int					safe_mutex_lock(pthread_mutex_t *mutex);

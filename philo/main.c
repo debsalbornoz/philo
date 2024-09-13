@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:41:46 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/12 19:39:20 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/12 20:48:20 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@ int	main(int argc, char **argv)
 	t_philo			philo[200];
 	pthread_mutex_t	forks[200];
 	t_monitor		monitor;
+	t_data			data;
 
 	if (!validate_args(argc, argv))
 		return (FALSE);
 	configure_dining_parameters(&dinner_data, argv, argc);
-	if (!initialize_dinner_data(&dinner_data, philo, forks, &monitor))
+	if (!initialize_forks(forks, &dinner_data) 
+		|| !initialize_philo_data(&dinner_data, philo, forks, &monitor)
+			|| !init_monitor_data(&monitor, philo) || !initialize_data(&data, &dinner_data, philo, &monitor)
+			|| !initialize_threads(&data, philo, &dinner_data, &monitor))
 		return (FALSE);
 }

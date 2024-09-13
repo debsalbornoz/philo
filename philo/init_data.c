@@ -3,28 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:08:06 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/12 20:12:56 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/12 21:21:29 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdint.h>
 
-int	initialize_dinner_data(t_dining_setup *dinner_data, t_philo *philo,
-	pthread_mutex_t *forks, t_monitor *monitor)
-{
-	if (!initialize_forks(forks, dinner_data) 
-		|| !initialize_philo_data(dinner_data, philo, forks, monitor)
-			|| !init_monitor_data(monitor, philo)
-		|| !initialize_threads(philo, dinner_data))
-
-		return (0);
-	else
-		return (1);
-}
 
 void	configure_dining_parameters(t_dining_setup *dinner_data,
 char **argv, int argc)
@@ -40,6 +28,7 @@ char **argv, int argc)
 		dinner_data->number_of_meals = -1;
 	dinner_data->start_dinner = get_time();
 	safe_mutex_init(dinner_data->print_status);
+	safe_mutex_init(dinner_data->n_meals);
 }
 
 t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
@@ -79,4 +68,12 @@ t_monitor	*init_monitor_data(t_monitor *monitor, t_philo *philo)
 		|| !safe_mutex_init(&monitor->death_notification))
 		return (NULL);
 	return (monitor);
+}
+
+t_data	*initialize_data(t_data *data, t_dining_setup *dinner_data, t_philo *philo, t_monitor *monitor)
+{
+	data->dinner_data = dinner_data;
+	data->philo = philo;
+	data->monitor = monitor;
+	return (data);
 }
