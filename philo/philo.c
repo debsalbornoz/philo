@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:30:53 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/12 19:46:31 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/13 17:30:30 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	process_philo_thinking(t_philo	*philo)
 		if (!philo_is_dead(philo))
 			print_actions(get_time(), philo->index, " is thinking");
 		safe_mutex_unlock(philo->dinner_info->print_status);
-		}
+	}
 	else
 		return ;
 }

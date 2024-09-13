@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/13 12:10:19 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/13 17:41:11 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,21 @@ void *monitor_routine(void *arg)
 		{
 			if (data->philo[i].number_of_meals == 1)
 			{
-				safe_mutex_lock(&data->monitor->death_notification);
-				data->monitor->death_status = 1;
-				print_actions(get_time(), data->philo[i].index, " is dead");
-				safe_mutex_unlock(&data->monitor->death_notification);
-					return (NULL);
+				if (safe_mutex_lock(&data->monitor->death_notification))
+				{
+					data->monitor->death_status = 1;
+					print_actions(get_time(), data->philo[i].index, " is dead");
+					safe_mutex_unlock(&data->monitor->death_notification);
+					return (NULL) ;
+				}
 			}	
 			i++;
 		}
 		i = 0;
 	}
+	return (NULL);
 }
+
 
 int initialize_threads(t_data *data, t_philo *philo, t_dining_setup *dinner_data, t_monitor *monitor)
 {
@@ -78,24 +82,30 @@ int initialize_threads(t_data *data, t_philo *philo, t_dining_setup *dinner_data
 		}
 		i++;
 	}
+	pthread_join(monitor->monitor, NULL);
 	i = 0;
 	while (i < num_philos)
 	{
 		pthread_join(philo[i].philo, NULL);
+		i++;
 	}
-	pthread_join(monitor->monitor, NULL);
 	return (1);
 }
 
 int philo_is_dead(t_philo *philo)
 {
-	int death_status;
-
 	if (safe_mutex_lock(&philo->monitor->check_death))
 	{
-		death_status = philo->monitor->death_status;
-		safe_mutex_unlock(&philo->monitor->check_death);
-		return death_status == 1;
+		if (philo->monitor->death_status == 1)
+		{
+			safe_mutex_unlock(&philo->monitor->check_death);
+			return (1);
+		}
+		else
+		{
+			safe_mutex_unlock(&philo->monitor->check_death);
+			return (0);
+		}
 	}
 	return (0);
 }
