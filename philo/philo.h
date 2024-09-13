@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/12 21:21:26 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/13 18:19:49 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ typedef struct s_philo
 	long int			last_meal;
 	int					number_of_meals;
 	t_monitor			*monitor;
+	int					first_meal;
+	pthread_mutex_t		check_first_meal;
 }	t_philo;
 
 typedef struct s_dining_setup
@@ -84,7 +86,6 @@ typedef struct s_dining_setup
 	long int				start_dinner;
 	long int				end_dinner;
 	pthread_mutex_t			print_status[1];
-	pthread_mutex_t			n_meals[1];
 }	t_dining_setup;
 
 

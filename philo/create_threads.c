@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/13 17:41:11 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/13 18:23:59 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,24 @@ void *routine(void *arg)
 	philo = (t_philo *)arg;
 	while (!philo_is_dead(philo))
 	{
-		if (!philo_is_dead(philo))
-			process_philo_thinking(philo);
-		if (!philo_is_dead(philo))
+		if (safe_mutex_lock(&philo->check_first_meal))
 		{
-			if (philo->index % 2 == 0)
-				process_even_philosopher_eating(philo);
-			else
-				process_odd_philosopher_eating(philo);
+			if (philo->first_meal == 0)
+			{
+				if (!philo_is_dead(philo))
+					process_philo_thinking(philo);
+				if (!philo_is_dead(philo))
+				{
+					if (philo->index % 2 == 0)
+						process_even_philosopher_eating(philo);
+					else
+						process_odd_philosopher_eating(philo);
+				}
+				if (!philo_is_dead(philo))
+					process_philo_sleeping(philo);
+			}
+			safe_mutex_unlock(&philo->check_first_meal);
 		}
-		if (!philo_is_dead(philo))
-			process_philo_sleeping(philo);
 	}
 	return (NULL);
 }

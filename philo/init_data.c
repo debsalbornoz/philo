@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:08:06 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/12 21:21:29 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/13 18:23:26 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ char **argv, int argc)
 		dinner_data->number_of_meals = -1;
 	dinner_data->start_dinner = get_time();
 	safe_mutex_init(dinner_data->print_status);
-	safe_mutex_init(dinner_data->n_meals);
 }
 
 t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
@@ -46,8 +45,10 @@ t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
 		assign_forks(philo, i, n_philo, forks);
 		philo[i].number_of_meals = 0;
 		philo[i].monitor = monitor;
+		philo[i].first_meal = 0;
 		i++;
 	}
+	safe_mutex_init(&philo->check_first_meal);
 	return (philo);
 }
 
