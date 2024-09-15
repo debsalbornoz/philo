@@ -26,7 +26,7 @@ char **argv, int argc)
 		dinner_data->number_of_meals = ft_atol(argv[5]);
 	else
 		dinner_data->number_of_meals = -1;
-	dinner_data->start_dinner = get_time();
+	dinner_data->start_dinner = get_time_ms();
 	safe_mutex_init(dinner_data->print_status);
 }
 
@@ -52,7 +52,7 @@ t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
 	return (philo);
 }
 
-long int	get_time(void)
+long int	get_time_ms(void)
 {
 	struct timeval	tv;
 	long int		time;
@@ -61,7 +61,10 @@ long int	get_time(void)
 	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 	return (time);
 }
-
+long int	get_time(t_dining_setup *dinner_data)
+{
+	return (get_time_ms() - dinner_data->start_dinner);
+}
 t_monitor	*init_monitor_data(t_monitor *monitor, t_philo *philo)
 {
 	monitor->philos = philo;

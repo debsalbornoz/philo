@@ -92,7 +92,8 @@ typedef struct s_dining_setup
 //init_data.c
 
 t_monitor		*init_monitor_data(t_monitor *monitor, t_philo *philo);
-long int		get_time(void);
+long int		get_time_ms(void);
+long int		get_time(t_dining_setup *dinner_data);
 t_philo			*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
 					pthread_mutex_t *forks, t_monitor *monitor);
 int				initialize_dinner_data(t_dining_setup *dinner_data, t_philo *philo,
@@ -104,8 +105,8 @@ t_data			*initialize_data(t_data *data, t_dining_setup *dinner_data, t_philo *ph
 
 int				philo_is_dead(t_philo *philo);
 int				initialize_threads(t_data *data, t_philo *philo, t_dining_setup	*dinner_data, t_monitor *monitor);
-void			*routine(void *arg);
-
+void			*philo_routine(void *arg);
+int 			process_philo_dining(t_philo *philo);
 //mutex.c
 int					safe_mutex_lock(pthread_mutex_t *mutex);
 int					safe_mutex_unlock(pthread_mutex_t *mutex);
@@ -118,7 +119,7 @@ void				process_odd_philosopher_eating(t_philo *philo);
 void				process_philo_sleeping(t_philo *philo);
 void				process_philo_thinking(t_philo	*philo);
 int					check_philo_state(t_philo *philo);
-
+void				process_philo_eating(t_philo *philo);
 //utils.c
 int					is_digit(char c);
 int					ft_strlen(char *str);

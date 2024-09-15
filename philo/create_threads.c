@@ -12,31 +12,59 @@
 
 #include "philo.h"
 
-void *routine(void *arg)
+int	process_first_meal_routine(t_philo *philo)
+{
+	if (!philo_is_dead(philo) && safe_mutex_lock(&philo->check_first_meal))
+	{
+		if (philo->first_meal == 0)
+		{
+			if (!philo_is_dead(philo))
+				process_philo_thinking(philo);
+			if (!philo_is_dead(philo))
+			{
+				if (philo->index % 2 == 0)
+					process_even_philosopher_eating(philo);
+				else
+					process_odd_philosopher_eating(philo);
+			}
+			if (!philo_is_dead(philo))
+				process_philo_sleeping(philo);
+		}
+		safe_mutex_unlock(&philo->check_first_meal);
+		return (1);
+	}
+	return (0);
+}
+
+int process_philo_dining(t_philo *philo)
+{
+	if (!philo_is_dead(philo) && safe_mutex_lock(&philo->check_first_meal))
+	{
+		if (philo->first_meal != 0)
+		{
+			if (!philo_is_dead(philo))
+				process_philo_thinking(philo);
+			if (!philo_is_dead(philo))
+				process_philo_eating(philo);
+			if (!philo_is_dead(philo))
+				process_philo_sleeping(philo);
+		}
+		safe_mutex_unlock(&philo->check_first_meal);
+		return (1);
+	}
+	return (0);
+}
+void *philo_routine(void *arg)
 {
 	t_philo *philo;
 	
 	philo = (t_philo *)arg;
+	if (!process_first_meal_routine(philo))
+		return (NULL);
 	while (!philo_is_dead(philo))
 	{
-		if (safe_mutex_lock(&philo->check_first_meal))
-		{
-			if (philo->first_meal == 0)
-			{
-				if (!philo_is_dead(philo))
-					process_philo_thinking(philo);
-				if (!philo_is_dead(philo))
-				{
-					if (philo->index % 2 == 0)
-						process_even_philosopher_eating(philo);
-					else
-						process_odd_philosopher_eating(philo);
-				}
-				if (!philo_is_dead(philo))
-					process_philo_sleeping(philo);
-			}
-			safe_mutex_unlock(&philo->check_first_meal);
-		}
+		if (!process_philo_dining(philo))
+			return (NULL);
 	}
 	return (NULL);
 }
@@ -59,7 +87,7 @@ void *monitor_routine(void *arg)
 				if (safe_mutex_lock(&data->monitor->death_notification))
 				{
 					data->monitor->death_status = 1;
-					print_actions(get_time(), data->philo[i].index, " is dead");
+					print_actions(get_time(data->dinner_data), data->philo[i].index, " is dead");
 					safe_mutex_unlock(&data->monitor->death_notification);
 					return (NULL) ;
 				}
@@ -82,7 +110,7 @@ int initialize_threads(t_data *data, t_philo *philo, t_dining_setup *dinner_data
 	pthread_create(&monitor->monitor, NULL, &monitor_routine, data);
 	while ( i < num_philos)
 	{
-		if (pthread_create(&philo[i].philo, NULL, &routine, &philo[i]) != 0)
+		if (pthread_create(&philo[i].philo, NULL, &philo_routine, &philo[i]) != 0)
 		{
 			ft_putstr_fd("Error creating thread\n", 2);
 			return 0;

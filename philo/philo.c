@@ -19,7 +19,7 @@ int	take_fork(t_philo *philo, pthread_mutex_t *fork)
 		if (safe_mutex_lock(philo->dinner_info->print_status))
 		{
 			if (!philo_is_dead(philo))
-				print_actions(get_time(), philo->index, " is taking fork");
+				print_actions(get_time(philo->dinner_info), philo->index, " is taking fork");
 			safe_mutex_unlock(philo->dinner_info->print_status);
 		}
 		safe_mutex_unlock(fork);
@@ -40,7 +40,7 @@ void	process_even_philosopher_eating(t_philo *philo)
 			{
 				if (!philo_is_dead(philo))
 				{
-					print_actions(get_time(), philo->index, " is eating");
+					print_actions(get_time(philo->dinner_info), philo->index, " is eating");
 					philo->number_of_meals += 1;
 				}		
 			safe_mutex_unlock(philo->dinner_info->print_status);
@@ -48,7 +48,24 @@ void	process_even_philosopher_eating(t_philo *philo)
 		}
 	}
 }
-
+void	process_philo_eating(t_philo *philo)
+{
+	if (take_fork(philo, philo->left_fork))
+	{
+		if (take_fork(philo, philo->right_fork))
+		{
+			if (safe_mutex_lock(philo->dinner_info->print_status))
+			{
+				if (!philo_is_dead(philo))
+				{
+					print_actions(get_time(philo->dinner_info), philo->index, " is eating");
+					philo->number_of_meals += 1;
+				}		
+			safe_mutex_unlock(philo->dinner_info->print_status);
+		}
+		}
+	}
+}
 void	process_odd_philosopher_eating(t_philo *philo)
 {
 	if (take_fork(philo, philo->right_fork))
@@ -59,7 +76,7 @@ void	process_odd_philosopher_eating(t_philo *philo)
 			{
 				if (!philo_is_dead(philo))
 				{
-					print_actions(get_time(), philo->index, " is eating");
+					print_actions(get_time(philo->dinner_info), philo->index, " is eating");
 					philo->number_of_meals += 1;
 				}		
 			safe_mutex_unlock(philo->dinner_info->print_status);
@@ -73,7 +90,7 @@ void	process_philo_thinking(t_philo	*philo)
 	if (safe_mutex_lock(philo->dinner_info->print_status))
 	{
 		if (!philo_is_dead(philo))
-			print_actions(get_time(), philo->index, " is thinking");
+			print_actions(get_time(philo->dinner_info), philo->index, " is thinking");
 		safe_mutex_unlock(philo->dinner_info->print_status);
 	}
 	else
@@ -86,7 +103,7 @@ void	process_philo_sleeping(t_philo *philo)
 	{
 		if (!philo_is_dead(philo))
 		{
-			print_actions(get_time(), philo->index, " is sleeping");
+			print_actions(get_time(philo->dinner_info), philo->index, " is sleeping");
 			usleep(philo->dinner_info->time_to_sleep);
 		}
 		safe_mutex_unlock(philo->dinner_info->print_status);
