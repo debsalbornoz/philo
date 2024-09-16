@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:08:06 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/16 17:54:51 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/16 18:48:06 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char **argv, int argc)
 		dinner_data->number_of_meals = -1;
 	dinner_data->start_dinner = get_time_ms();
 	safe_mutex_init(dinner_data->print_status);
-	safe_mutex_init(dinner_data->update_number_of_meals);
+	safe_mutex_init(dinner_data->nbr_of_meals);
 }
 
 t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
@@ -46,7 +46,7 @@ t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
 		assign_forks(philo, i, n_philo, forks);
 		philo[i].number_of_meals = 0;
 		philo[i].monitor = monitor;
-		philo[i].first_meal = 0;
+		philo[i].meals = 0;
 		i++;
 	}
 	safe_mutex_init(&philo->check_first_meal);

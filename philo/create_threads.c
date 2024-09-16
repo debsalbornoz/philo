@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/16 18:11:58 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/16 19:07:49 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	process_first_meal_routine(t_philo *philo)
 {
 	if (!philo_is_dead(philo) && safe_mutex_lock(&philo->check_first_meal))
 	{
-		if (philo->first_meal == 0)
+		if (philo->meals == 0)
 		{
 			if (!philo_is_dead(philo))
 				process_philo_thinking(philo);
@@ -40,7 +40,7 @@ int process_philo_dining(t_philo *philo)
 {
 	if (!philo_is_dead(philo) && safe_mutex_lock(&philo->check_first_meal))
 	{
-		if (philo->first_meal != 0)
+		if (philo->meals != 0)
 		{
 			if (!philo_is_dead(philo))
 				process_philo_thinking(philo);
@@ -82,20 +82,21 @@ void *monitor_routine(void *arg)
 	{
 		while ( i < num_philos)
 		{
-			if (safe_mutex_lock(data->philo[i].dinner_info->update_number_of_meals))
+			if (safe_mutex_lock(data->philo[i].dinner_info->nbr_of_meals))
 			{
-				if (data->philo[i].number_of_meals == 1)
+				if (data->philo[i].dinner_info->start_dinner - data->philo[i].last_meal < 0)
 				{
 					if (safe_mutex_lock(&data->monitor->check_death))
 					{
 						data->monitor->death_status = 1;
 						print_actions(get_time(data->dinner_data), data->philo[i].index, " is dead");
 						safe_mutex_unlock(&data->monitor->check_death);
+						safe_mutex_unlock(data->philo[i].dinner_info->nbr_of_meals);
 						return (NULL) ;
 					}
 				}
-				safe_mutex_unlock(data->philo[i].dinner_info->update_number_of_meals);	
-			}	
+				safe_mutex_unlock(data->philo[i].dinner_info->nbr_of_meals);
+			}
 			i++;
 		}
 		i = 0;
@@ -147,4 +148,15 @@ int philo_is_dead(t_philo *philo)
 		}
 	}
 	return (0);
+}
+
+int	check_meals(t_philo *philo)
+{
+	if (safe_mutex_lock(philo->dinner_info->nbr_of_meals))
+	{
+		if (philo->meals == philo->dinner_info->number_of_meals)
+			return (0);
+		safe_mutex_unlock(philo->dinner_info->nbr_of_meals);
+	}
+	return (1);
 }
