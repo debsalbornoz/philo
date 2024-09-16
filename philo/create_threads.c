@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_threads.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/13 18:27:49 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/16 18:11:58 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,19 @@ void *monitor_routine(void *arg)
 	{
 		while ( i < num_philos)
 		{
-			if (data->philo[i].number_of_meals == 1)
+			if (safe_mutex_lock(data->philo[i].dinner_info->update_number_of_meals))
 			{
-				if (safe_mutex_lock(&data->monitor->death_notification))
+				if (data->philo[i].number_of_meals == 1)
 				{
-					data->monitor->death_status = 1;
-					print_actions(get_time(data->dinner_data), data->philo[i].index, " is dead");
-					safe_mutex_unlock(&data->monitor->death_notification);
-					return (NULL) ;
+					if (safe_mutex_lock(&data->monitor->check_death))
+					{
+						data->monitor->death_status = 1;
+						print_actions(get_time(data->dinner_data), data->philo[i].index, " is dead");
+						safe_mutex_unlock(&data->monitor->check_death);
+						return (NULL) ;
+					}
 				}
+				safe_mutex_unlock(data->philo[i].dinner_info->update_number_of_meals);	
 			}	
 			i++;
 		}
