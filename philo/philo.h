@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/16 18:46:55 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:41:53 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,12 @@ int					safe_mutex_init(pthread_mutex_t *mutex);
 int					safe_mutex_destroy(pthread_mutex_t *mutex);
 
 //philo.c
-void				process_even_philosopher_eating(t_philo *philo);
-void				process_odd_philosopher_eating(t_philo *philo);
+int				process_even_philosopher_eating(t_philo *philo);
+int				process_odd_philosopher_eating(t_philo *philo);
 void				process_philo_sleeping(t_philo *philo);
 void				process_philo_thinking(t_philo	*philo);
 int					check_philo_state(t_philo *philo);
-void				process_philo_eating(t_philo *philo);
+int				process_philo_eating(t_philo *philo);
 //utils.c
 int					is_digit(char c);
 int					ft_strlen(char *str);

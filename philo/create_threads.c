@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_threads.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/16 19:07:49 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/17 11:40:28 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,16 @@ int	process_first_meal_routine(t_philo *philo)
 			if (!philo_is_dead(philo))
 			{
 				if (philo->index % 2 == 0)
-					process_even_philosopher_eating(philo);
+				{
+					if (!process_even_philosopher_eating(philo))
+						return (0);
+				}
 				else
-					process_odd_philosopher_eating(philo);
+				{
+					if (!process_odd_philosopher_eating(philo))
+						return (0);
+					
+				}
 			}
 			if (!philo_is_dead(philo))
 				process_philo_sleeping(philo);
@@ -36,7 +43,7 @@ int	process_first_meal_routine(t_philo *philo)
 	return (0);
 }
 
-int process_philo_dining(t_philo *philo)
+int	process_philo_dining(t_philo *philo)
 {
 	if (!philo_is_dead(philo) && safe_mutex_lock(&philo->check_first_meal))
 	{
@@ -45,7 +52,11 @@ int process_philo_dining(t_philo *philo)
 			if (!philo_is_dead(philo))
 				process_philo_thinking(philo);
 			if (!philo_is_dead(philo))
-				process_philo_eating(philo);
+			{
+				if (!process_philo_eating(philo))
+					return (0);
+				
+			}
 			if (!philo_is_dead(philo))
 				process_philo_sleeping(philo);
 		}

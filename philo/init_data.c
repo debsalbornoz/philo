@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:08:06 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/16 18:48:06 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:30:13 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ char **argv, int argc)
 {
 	dinner_data->philosophers = ft_atol(argv[1]);
 	dinner_data->n_forks = ft_atol(argv[1]);
-	dinner_data->time_to_die = ft_atol(argv[2]);
-	dinner_data->time_to_eat = ft_atol(argv[3]);
-	dinner_data->time_to_sleep = ft_atol(argv[4]);
+	dinner_data->time_to_die = ft_atol(argv[2]) * 1000;
+	dinner_data->time_to_eat = ft_atol(argv[3]) * 1000;
+	dinner_data->time_to_sleep = ft_atol(argv[4]) * 1000;
 	if (argc == 6)
 		dinner_data->number_of_meals = ft_atol(argv[5]);
 	else
