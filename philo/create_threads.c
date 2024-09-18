@@ -3,75 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   create_threads.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/17 11:40:28 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/17 21:11:57 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	process_first_meal_routine(t_philo *philo)
-{
-	if (!philo_is_dead(philo) && safe_mutex_lock(&philo->check_first_meal))
-	{
-		if (philo->meals == 0)
-		{
-			if (!philo_is_dead(philo))
-				process_philo_thinking(philo);
-			if (!philo_is_dead(philo))
-			{
-				if (philo->index % 2 == 0)
-				{
-					if (!process_even_philosopher_eating(philo))
-						return (0);
-				}
-				else
-				{
-					if (!process_odd_philosopher_eating(philo))
-						return (0);
-					
-				}
-			}
-			if (!philo_is_dead(philo))
-				process_philo_sleeping(philo);
-		}
-		safe_mutex_unlock(&philo->check_first_meal);
-		return (1);
-	}
-	return (0);
-}
-
 int	process_philo_dining(t_philo *philo)
 {
-	if (!philo_is_dead(philo) && safe_mutex_lock(&philo->check_first_meal))
+	if (!philo_is_dead(philo))
 	{
-		if (philo->meals != 0)
+		if (!philo_is_dead(philo))
+			process_philo_thinking(philo);
+		if (!philo_is_dead(philo))
 		{
-			if (!philo_is_dead(philo))
-				process_philo_thinking(philo);
-			if (!philo_is_dead(philo))
+			if (philo->index % 2 == 0)
 			{
-				if (!process_philo_eating(philo))
+				if (!process_even_philo_eating(philo))
 					return (0);
-				
 			}
-			if (!philo_is_dead(philo))
-				process_philo_sleeping(philo);
+			else
+			{
+				if (!process_odd_philo_eating(philo))
+					return (0);
+			}
 		}
-		safe_mutex_unlock(&philo->check_first_meal);
-		return (1);
+		if (!philo_is_dead(philo))
+			process_philo_sleeping(philo);
 	}
-	return (0);
+	return (1);
 }
+
 void *philo_routine(void *arg)
 {
 	t_philo *philo;
 	
 	philo = (t_philo *)arg;
-	if (!process_first_meal_routine(philo))
-		return (NULL);
 	while (!philo_is_dead(philo))
 	{
 		if (!process_philo_dining(philo))
@@ -95,7 +65,9 @@ void *monitor_routine(void *arg)
 		{
 			if (safe_mutex_lock(data->philo[i].dinner_info->nbr_of_meals))
 			{
-				if (data->philo[i].dinner_info->start_dinner - data->philo[i].last_meal < 0)
+				printf("%li\n", data->philo[i].dinner_info->start_dinner);
+				printf("%li\n", data->philo[i].last_meal);
+				if (get_time_ms() - data->philo[i].last_meal > data->dinner_data->time_to_die)
 				{
 					if (safe_mutex_lock(&data->monitor->check_death))
 					{
@@ -123,7 +95,6 @@ int initialize_threads(t_data *data, t_philo *philo, t_dining_setup *dinner_data
 	
 	num_philos = dinner_data->philosophers;
 	i = 0;
-	pthread_create(&monitor->monitor, NULL, &monitor_routine, data);
 	while ( i < num_philos)
 	{
 		if (pthread_create(&philo[i].philo, NULL, &philo_routine, &philo[i]) != 0)
@@ -133,6 +104,7 @@ int initialize_threads(t_data *data, t_philo *philo, t_dining_setup *dinner_data
 		}
 		i++;
 	}
+	pthread_create(&monitor->monitor, NULL, &monitor_routine, data);
 	pthread_join(monitor->monitor, NULL);
 	i = 0;
 	while (i < num_philos)

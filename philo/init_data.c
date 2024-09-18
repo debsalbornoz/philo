@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:08:06 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/17 17:30:13 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/17 19:05:27 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ char **argv, int argc)
 {
 	dinner_data->philosophers = ft_atol(argv[1]);
 	dinner_data->n_forks = ft_atol(argv[1]);
-	dinner_data->time_to_die = ft_atol(argv[2]) * 1000;
-	dinner_data->time_to_eat = ft_atol(argv[3]) * 1000;
-	dinner_data->time_to_sleep = ft_atol(argv[4]) * 1000;
+	dinner_data->time_to_die = ft_atol(argv[2]);
+	dinner_data->time_to_eat = ft_atol(argv[3]);
+	dinner_data->time_to_sleep = ft_atol( argv[4]);
 	if (argc == 6)
 		dinner_data->number_of_meals = ft_atol(argv[5]);
 	else
@@ -53,16 +53,19 @@ t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
 	return (philo);
 }
 
-long int	get_time_ms(void)
+unsigned int	get_time_ms(void)
 {
 	struct timeval	tv;
-	long int		time;
 
-	gettimeofday(&tv, NULL);
-	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-	return (time);
+	if (gettimeofday(&tv, NULL))
+	{
+		write(2, "Error: gettimeofday failed\n", 28);
+		return (0);
+	}
+	return ((tv.tv_sec * (unsigned int)1000) + (tv.tv_usec / 1000));
 }
-long int	get_time(t_dining_setup *dinner_data)
+
+unsigned int	get_time(t_dining_setup *dinner_data)
 {
 	return (get_time_ms() - dinner_data->start_dinner);
 }

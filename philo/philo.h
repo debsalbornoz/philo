@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/17 11:41:53 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/17 21:11:45 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ typedef struct s_dining_setup
 //init_data.c
 
 t_monitor		*init_monitor_data(t_monitor *monitor, t_philo *philo);
-long int		get_time_ms(void);
-long int		get_time(t_dining_setup *dinner_data);
+unsigned int		get_time_ms(void);
+unsigned int		get_time(t_dining_setup *dinner_data);
 t_philo			*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
 					pthread_mutex_t *forks, t_monitor *monitor);
 int				initialize_dinner_data(t_dining_setup *dinner_data, t_philo *philo,
@@ -115,7 +115,8 @@ int					safe_mutex_init(pthread_mutex_t *mutex);
 int					safe_mutex_destroy(pthread_mutex_t *mutex);
 
 //philo.c
-int				process_even_philosopher_eating(t_philo *philo);
+int	process_even_philo_eating(t_philo *philo);
+int	process_odd_philo_eating(t_philo *philo);
 int				process_odd_philosopher_eating(t_philo *philo);
 void				process_philo_sleeping(t_philo *philo);
 void				process_philo_thinking(t_philo	*philo);

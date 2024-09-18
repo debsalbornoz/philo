@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_status_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 14:48:19 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/13 12:37:29 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/17 19:33:42 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,27 @@ void	*ft_memcpy(void *dest, const void *src, int n);
 
 void print_actions(long int time, int philo_index, char *action)
 {
-    char time_str[25];
-    char index_str[10];
-    char buffer[256];
-	int  total_len;
-	int	offset;
+	char	time_str[25];
+	char	index_str[10];
+	char	buffer[256];
+	int		total_len;
+	int		offset;
 
 	offset = 0;
-    ft_itoa(time, time_str, sizeof(time_str), 0 );
-    ft_itoa(philo_index, index_str, sizeof(index_str), 0);
-    total_len = ft_strlen(time_str) + ft_strlen(index_str) + ft_strlen(action) + 3;
-    
-    if ((long unsigned int) total_len >= sizeof(buffer))
-        return ; 
-    ft_memcpy(buffer + offset, time_str, ft_strlen(time_str));
-    offset += ft_strlen(time_str);
-    buffer[offset++] = ' ';
-    ft_memcpy(buffer + offset, index_str, ft_strlen(index_str));
-    offset += ft_strlen(index_str);
-    ft_memcpy(buffer + offset, action, ft_strlen(action));
-    offset += ft_strlen(action);
-    buffer[offset++] = '\n';
-    write(1, buffer, offset);
+	ft_itoa(time, time_str, sizeof(time_str), 0 );
+	ft_itoa(philo_index, index_str, sizeof(index_str), 0);
+	total_len = ft_strlen(time_str) + ft_strlen(index_str) + ft_strlen(action) + 3;
+	if ((long unsigned int) total_len >= sizeof(buffer))
+		return ; 
+	ft_memcpy(buffer + offset, time_str, ft_strlen(time_str));
+	offset += ft_strlen(time_str);
+	buffer[offset++] = ' ';
+	ft_memcpy(buffer + offset, index_str, ft_strlen(index_str));
+	offset += ft_strlen(index_str);
+	ft_memcpy(buffer + offset, action, ft_strlen(action));
+	offset += ft_strlen(action);
+	buffer[offset++] = '\n';
+	write(1, buffer, offset);
 }
 
 
