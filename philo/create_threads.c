@@ -117,19 +117,19 @@ int initialize_threads(t_data *data, t_philo *philo, t_dining_setup *dinner_data
 
 int philo_is_dead(t_philo *philo)
 {
-	if (safe_mutex_lock(&philo->monitor->check_death))
+    long int time;
+
+    pthread_mutex_lock(&philo->monitor->check_death);
+	time = get_time(philo->dinner_info);
+	if (time - philo->last_meal > philo->dinner_info->time_to_die)
 	{
-		if (philo->monitor->death_status == 1)
-		{
-			safe_mutex_unlock(&philo->monitor->check_death);
-			return (1);
-		}
-		else
-		{
-			safe_mutex_unlock(&philo->monitor->check_death);
-			return (0);
-		}
+		philo->monitor->death_status = 1;
+		ft_putstr_fd("died\n", 1);
+		if (pthread_mutex_unlock(&philo->monitor->check_death) != 0)
+			return (-1);
+		return (1);
 	}
+	pthread_mutex_unlock(&philo->monitor->check_death);
 	return (0);
 }
 
