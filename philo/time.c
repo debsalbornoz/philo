@@ -32,5 +32,5 @@ unsigned int	get_time(t_dining_setup *dinner_data)
 	time1 = get_time_ms();
 	time2 = dinner_data->start_dinner;
 
-	return (get_time_ms() - dinner_data->start_dinner);
+	return (time1 - time2);
 }

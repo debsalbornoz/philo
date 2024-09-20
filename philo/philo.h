@@ -142,4 +142,5 @@ int	initialize_mutexes(t_mutexes *mutexes);
 
 void	print_actions(long int time, int philo_index, char *action, t_philo *philo);
 int			check_meals(t_philo *philo);
+int	handle_eat(t_philo *philo);
 #endif

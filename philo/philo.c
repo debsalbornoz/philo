@@ -14,41 +14,34 @@
 
 int	handle_eat(t_philo *philo);
 
-int	process_even_philo_eating(t_philo *philo)
+int	process_philo_eating(t_philo *philo)
 {
-	if (!philo_is_dead(philo) && safe_mutex_lock(philo->left_fork))
+	pthread_mutex_t	*first_fork;
+	pthread_mutex_t *second_fork;
+
+	if (philo->index % 2 == 0)
 	{
-		if (!philo_is_dead(philo) && safe_mutex_lock(philo->right_fork))
-		{
-			print_actions(get_time(philo->dinner_info), philo->index, " is taking fork", philo);
-			if (!handle_eat(philo))
-			{
-				safe_mutex_unlock(philo->right_fork);
-				return (0);
-			}
-			safe_mutex_unlock(philo->right_fork);
-		}
-		safe_mutex_unlock(philo->left_fork);
-		return (1);
+		first_fork = philo->left_fork;
+		second_fork = philo->right_fork;
 	}
 	else
-		return (0);
-}
-int	process_odd_philo_eating(t_philo *philo)
-{
-	if (!philo_is_dead(philo) && safe_mutex_lock(philo->right_fork))
 	{
-		if (!philo_is_dead(philo) && safe_mutex_lock(philo->left_fork))
+		first_fork = philo->right_fork;
+		second_fork = philo->left_fork;
+	}
+	if (!philo_is_dead(philo) && safe_mutex_lock(first_fork))
+	{
+		if (!philo_is_dead(philo) && safe_mutex_lock(second_fork))
 		{
 			print_actions(get_time(philo->dinner_info), philo->index, " is taking fork", philo);
 			if (!handle_eat(philo))
 			{
-				safe_mutex_unlock(philo->left_fork);				
+				safe_mutex_unlock(second_fork);
 				return (0);
 			}
-			safe_mutex_unlock(philo->left_fork);
+			safe_mutex_unlock(second_fork);
 		}
-		safe_mutex_unlock(philo->right_fork);
+		safe_mutex_unlock(first_fork);
 		return (1);
 	}
 	else

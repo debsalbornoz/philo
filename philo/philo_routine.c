@@ -12,54 +12,44 @@
 
 #include "philo.h"
 
-
-void *monitor_routine(void *arg)
+void *philo_routine(void *arg)
 {
-	t_data	*data;
-	int		num_philos;
-	int		i;
+	t_philo *philo;
 	
-	data = (t_data *)arg;
-	num_philos = data->dinner_data->philosophers;
-	i = 0;
-	while (1)
+	philo = (t_philo *)arg;
+	while (!philo_is_dead(philo))
 	{
-		while (num_philos > i)
-		{
-			if (!philo_is_dead(&data->philo[i]))
-				return (0);
-		
-			i++;
-		}
-		i = 0;
+		process_philo_thinking(philo);
+        process_philo_eating(philo);
+		process_philo_sleeping(philo);
 	}
 	return (NULL);
 }
 
 
-int initialize_threads(t_data *data, t_philo *philo, t_dining_setup *dinner_data, t_monitor *monitor)
+int philo_is_dead(t_philo *philo)
 {
-	int i;
-	int num_philos;
-	
-	num_philos = dinner_data->philosophers;
-	i = 0;
-	while ( i < num_philos)
+    pthread_mutex_lock(&philo->monitor->monitor_philo);
+	if (get_time_ms() - philo->last_meal > philo->dinner_info->time_to_die)
 	{
-		if (pthread_create(&philo[i].philo, NULL, &philo_routine, &philo[i]) != 0)
-		{
-			ft_putstr_fd("Error creating thread\n", 2);
-			return 0;
-		}
-		i++;
+		philo->monitor->death_status = 1;
+		//print_actions(get_time(philo->dinner_info), philo->index, "is dead\n", philo);
+		if (pthread_mutex_unlock(&philo->monitor->monitor_philo) != 0)
+			return (-1);
+		return (1);
 	}
-	pthread_create(&monitor->monitor, NULL, &monitor_routine, data);
-	pthread_join(monitor->monitor, NULL);
-	i = 0;
-	while (i < num_philos)
+	usleep(5);
+	pthread_mutex_unlock(&philo->monitor->monitor_philo);
+	return (0);
+}
+
+int	check_meals(t_philo *philo)
+{
+	if (safe_mutex_lock(&philo->monitor->monitor_philo))
 	{
-		pthread_join(philo[i].philo, NULL);
-		i++;
+		if (philo->number_of_meals == philo->dinner_info->number_of_meals)
+			return (0);
+		safe_mutex_unlock(&philo->monitor->monitor_philo);
 	}
 	return (1);
 }

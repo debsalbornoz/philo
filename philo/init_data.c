@@ -44,6 +44,7 @@ t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
 		assign_forks(philo, i, n_philo, forks);
 		philo[i].number_of_meals = 0;
 		philo[i].monitor = monitor;
+		philo[i].last_meal = philo[i].dinner_info->start_dinner;
 		i++;
 	}
 	safe_mutex_init(&philo->check_first_meal);
