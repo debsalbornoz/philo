@@ -6,50 +6,37 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 14:48:19 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/17 19:33:42 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/19 19:59:55 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*ft_memcpy(void *dest, const void *src, int n);
-
-void print_actions(long int time, int philo_index, char *action)
+void print_actions(long int time, int philo_index, char *action, t_philo *philo)
 {
-	char	time_str[25];
-	char	index_str[10];
-	char	buffer[256];
-	int		total_len;
-	int		offset;
+	char *ft_time;
+	char *str;
+	char *i;
 
-	offset = 0;
-	ft_itoa(time, time_str, sizeof(time_str), 0 );
-	ft_itoa(philo_index, index_str, sizeof(index_str), 0);
-	total_len = ft_strlen(time_str) + ft_strlen(index_str) + ft_strlen(action) + 3;
-	if ((long unsigned int) total_len >= sizeof(buffer))
-		return ; 
-	ft_memcpy(buffer + offset, time_str, ft_strlen(time_str));
-	offset += ft_strlen(time_str);
-	buffer[offset++] = ' ';
-	ft_memcpy(buffer + offset, index_str, ft_strlen(index_str));
-	offset += ft_strlen(index_str);
-	ft_memcpy(buffer + offset, action, ft_strlen(action));
-	offset += ft_strlen(action);
-	buffer[offset++] = '\n';
-	write(1, buffer, offset);
+	ft_time = ft_itoa(time);
+	i = ft_itoa((long int)philo_index);
+	str = malloc((ft_strlen(ft_time)) + ft_strlen(i) + ft_strlen(action) + 4 * sizeof(char));
+	free(ft_time);
+	ft_strlcat(str, " ", ft_strlen(ft_time) + 2);
+	ft_strlcat(str, i, ft_strlen(str) + ft_strlen(i) + 1 );
+	free(i);
+	ft_strlcat(str, " ", ft_strlen(str) + 2);
+	ft_strlcat(str, action, ft_strlen(str) + ft_strlen(action) + 1);
+	ft_strlcat(str, "\n", ft_strlen(str) + 2);
+	if (!philo_is_dead(philo) && safe_mutex_lock(&philo->monitor->print_status))
+	{
+		ft_putstr_fd(str, 1);
+		free(str);
+		safe_mutex_unlock(&philo->monitor->print_status);
+	}
 }
 
-
-void	ft_putstr_fd(const char *str, int fd)
-{
-	int	len;
-
-	len = ft_strlen((char *)str);
-	write(fd, str, len);
-}
-
-
-static int	get_digits(long int nbr)
+static int get_digits(long int nbr)
 {
 	unsigned int counter = 1;
 	
@@ -63,52 +50,61 @@ static int	get_digits(long int nbr)
 	return (counter);
 }
 
-
-void ft_itoa(long int n, char *str, size_t buffer_size, int is_negative)
+char *ft_itoa(long int n)
 {
+	char *str;
+	size_t num_digits;
 	long int num;
-	int num_digits;
 
-	is_negative = 0;
 	num = n;
-	if (num < 0)
+	num_digits = get_digits(n);
+	if (n < 0)
 	{
-		is_negative = 1;
-		num = -num;
-	}
-	num_digits = get_digits(num);
-	if (is_negative)
+		num = num * -1;
 		num_digits++;
-	if (buffer_size <= (size_t)num_digits)
-	{ 
-		str[0] = '\0';
-		return;
 	}
-	str[num_digits] = '\0';
-	if (is_negative) str[0] = '-';
-	while (num_digits > is_negative)
+	str = (char *)malloc(sizeof(char) * (num_digits + 1));
+	if (str == NULL)
+		return (NULL);
+	*(str + num_digits) = '\0';
+	while (num_digits--)
 	{
-		str[--num_digits] = (num % 10) + '0';
-		num /= 10;
+		*(str + num_digits) = num % 10 + '0';
+		num = num / 10;
 	}
+	if (n < 0)
+		*(str + 0) = '-';
+	return (str);
 }
 
-void	*ft_memcpy(void *dest, const void *src, int n)
-{
-	unsigned char *psrc; 
-	unsigned char *pdest;
-	int i;
 
-	psrc = (unsigned char *)src; 
-	pdest = (unsigned char *)dest;
+int	ft_strlcat(char *dst, char *src, int size)
+{
+	int i;
+	int j;
+	int dst_len;
+	int src_len;
+
 	i = 0;
-	if (dest == 0 && src == 0)
-		return (dest);
-	while (n > 0)
-	{
-		pdest[i] = psrc[i]; 
+	j = 0;
+	dst_len = ft_strlen(dst);
+	src_len = ft_strlen(src); 
+	if (size <= dst_len)
+		return (size + src_len);
+	while (dst[i] != '\0' && i < size - 1)
 		i++;
-		n--;
+	while (src[j] != '\0' && i < size - 1)
+	{
+		dst[i] = src[j];
+		i++;
+		j++;
 	}
-	return (dest);
+	dst[i] = '\0'; 
+	return (dst_len + src_len);
+}
+
+
+void	ft_putstr_fd(char *s, int fd)
+{
+		write(fd, s, ft_strlen(s));
 }

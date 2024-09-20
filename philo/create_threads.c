@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/17 21:11:57 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/19 21:56:57 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	process_philo_dining(t_philo *philo)
 		if (!philo_is_dead(philo))
 			process_philo_sleeping(philo);
 	}
-	return (1);
+	return (0);
 }
 
 void *philo_routine(void *arg)
@@ -61,25 +61,11 @@ void *monitor_routine(void *arg)
 	i = 0;
 	while (1)
 	{
-		while ( i < num_philos)
+		while (num_philos > i)
 		{
-			if (safe_mutex_lock(data->philo[i].dinner_info->nbr_of_meals))
-			{
-				printf("%li\n", data->philo[i].dinner_info->start_dinner);
-				printf("%li\n", data->philo[i].last_meal);
-				if (get_time_ms() - data->philo[i].last_meal > data->dinner_data->time_to_die)
-				{
-					if (safe_mutex_lock(&data->monitor->check_death))
-					{
-						data->monitor->death_status = 1;
-						print_actions(get_time(data->dinner_data), data->philo[i].index, " is dead");
-						safe_mutex_unlock(&data->monitor->check_death);
-						safe_mutex_unlock(data->philo[i].dinner_info->nbr_of_meals);
-						return (NULL) ;
-					}
-				}
-				safe_mutex_unlock(data->philo[i].dinner_info->nbr_of_meals);
-			}
+			if (!philo_is_dead(&data->philo[i]))
+				return (0);
+		
 			i++;
 		}
 		i = 0;
@@ -119,27 +105,32 @@ int philo_is_dead(t_philo *philo)
 {
     long int time;
 
-    pthread_mutex_lock(&philo->monitor->check_death);
+    pthread_mutex_lock(&philo->monitor->monitor_philo);
 	time = get_time(philo->dinner_info);
-	if (time - philo->last_meal > philo->dinner_info->time_to_die)
+	printf("time %li: \n", time);
+	printf(" last meal : %li\n", philo->last_meal);
+	printf("time - last meal: %li\n",time - philo->last_meal);
+	printf("time to die: %li \n", philo->dinner_info->time_to_die);
+	if (get_time_ms() - philo->last_meal > philo->dinner_info->time_to_die)
 	{
+		printf("chega aqui?\n");
 		philo->monitor->death_status = 1;
 		ft_putstr_fd("died\n", 1);
-		if (pthread_mutex_unlock(&philo->monitor->check_death) != 0)
+		if (pthread_mutex_unlock(&philo->monitor->monitor_philo) != 0)
 			return (-1);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->monitor->check_death);
+	pthread_mutex_unlock(&philo->monitor->monitor_philo);
 	return (0);
 }
 
 int	check_meals(t_philo *philo)
 {
-	if (safe_mutex_lock(philo->dinner_info->nbr_of_meals))
+	if (safe_mutex_lock(&philo->monitor->monitor_philo))
 	{
-		if (philo->meals == philo->dinner_info->number_of_meals)
+		if (philo->number_of_meals == philo->dinner_info->number_of_meals)
 			return (0);
-		safe_mutex_unlock(philo->dinner_info->nbr_of_meals);
+		safe_mutex_unlock(&philo->monitor->monitor_philo);
 	}
 	return (1);
 }

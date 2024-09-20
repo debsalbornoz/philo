@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:30:53 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/17 21:11:30 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/19 22:00:38 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,13 @@ int	process_even_philo_eating(t_philo *philo)
 {
 	if (!philo_is_dead(philo) && safe_mutex_lock(philo->left_fork))
 	{
-		if (safe_mutex_lock(philo->right_fork))
+		if (!philo_is_dead(philo) && safe_mutex_lock(philo->right_fork))
 		{
-			if (safe_mutex_lock(philo->dinner_info->print_status))
+			print_actions(get_time(philo->dinner_info), philo->index, " is taking fork", philo);
+			if (!handle_eat(philo))
 			{
-				if (!philo_is_dead(philo))
-					print_actions(get_time(philo->dinner_info), philo->index, " is taking fork");
-				if (!handle_eat(philo))
-					return (0);
-				safe_mutex_unlock(philo->dinner_info->print_status);
+				safe_mutex_unlock(philo->right_fork);
+				return (0);
 			}
 			safe_mutex_unlock(philo->right_fork);
 		}
@@ -40,15 +38,13 @@ int	process_odd_philo_eating(t_philo *philo)
 {
 	if (!philo_is_dead(philo) && safe_mutex_lock(philo->right_fork))
 	{
-		if (safe_mutex_lock(philo->left_fork))
+		if (!philo_is_dead(philo) && safe_mutex_lock(philo->left_fork))
 		{
-			if (safe_mutex_lock(philo->dinner_info->print_status))
+			print_actions(get_time(philo->dinner_info), philo->index, " is taking fork", philo);
+			if (!handle_eat(philo))
 			{
-				if (!philo_is_dead(philo))
-					print_actions(get_time(philo->dinner_info), philo->index, " is taking fork");
-				if (!handle_eat(philo))
-					return (0);
-				safe_mutex_unlock(philo->dinner_info->print_status);
+				safe_mutex_unlock(philo->left_fork);				
+				return (0);
 			}
 			safe_mutex_unlock(philo->left_fork);
 		}
@@ -65,13 +61,13 @@ int	handle_eat(t_philo *philo)
 	{
 		if (!check_meals(philo))
 			return (0);
-		print_actions(get_time(philo->dinner_info), philo->index, " is eating");
-		if (safe_mutex_lock(philo->dinner_info->nbr_of_meals))
+		print_actions(get_time(philo->dinner_info), philo->index, " is eating", philo);
+		if (safe_mutex_lock(&philo->monitor->monitor_philo))
 		{
 			philo->number_of_meals += 1;
 			usleep(philo->dinner_info->time_to_eat);
-			philo->last_meal = get_time_ms();
-			safe_mutex_unlock(philo->dinner_info->nbr_of_meals);
+			philo->last_meal = get_time(philo->dinner_info);
+			safe_mutex_unlock(&philo->monitor->monitor_philo);
 		}
 	}
 	return (1);
@@ -79,25 +75,17 @@ int	handle_eat(t_philo *philo)
 
 void	process_philo_thinking(t_philo	*philo)
 {
-	if (safe_mutex_lock(philo->dinner_info->print_status))
-	{
-		if (!philo_is_dead(philo))
-			print_actions(get_time(philo->dinner_info), philo->index, " is thinking");
-		safe_mutex_unlock(philo->dinner_info->print_status);
-	}
+	if (!philo_is_dead(philo))
+		print_actions(get_time(philo->dinner_info), philo->index, " is thinking", philo);
 	else
 		return ;
 }
 
 void	process_philo_sleeping(t_philo *philo)
 {
-	if (safe_mutex_lock(philo->dinner_info->print_status))
+	if (!philo_is_dead(philo))
 	{
-		if (!philo_is_dead(philo))
-		{
-			print_actions(get_time(philo->dinner_info), philo->index, " is sleeping");
-			usleep(philo->dinner_info->time_to_sleep);
-		}
-		safe_mutex_unlock(philo->dinner_info->print_status);
-		}		
+		print_actions(get_time(philo->dinner_info), philo->index, " is sleeping", philo);
+		usleep(philo->dinner_info->time_to_sleep);
 	}
+}

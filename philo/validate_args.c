@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_args.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 14:46:58 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/12 17:38:05 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/19 20:01:12 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	is_numeric_arg(const char *str)
 	{
 		if (!is_digit(*str))
 		{
-			ft_putstr_fd(str, 2);
+			ft_putstr_fd((char *)str, 2);
 			ft_putstr_fd(" is not a valid argument :", 2);
 			ft_putstr_fd(" only numeric arguments are acepted\n", 2);
 			return (FALSE);

@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:08:06 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/17 19:05:27 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/19 21:11:16 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ char **argv, int argc)
 	else
 		dinner_data->number_of_meals = -1;
 	dinner_data->start_dinner = get_time_ms();
-	safe_mutex_init(dinner_data->print_status);
-	safe_mutex_init(dinner_data->nbr_of_meals);
 }
 
 t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
@@ -46,34 +44,16 @@ t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
 		assign_forks(philo, i, n_philo, forks);
 		philo[i].number_of_meals = 0;
 		philo[i].monitor = monitor;
-		philo[i].meals = 0;
 		i++;
 	}
 	safe_mutex_init(&philo->check_first_meal);
 	return (philo);
 }
 
-unsigned int	get_time_ms(void)
-{
-	struct timeval	tv;
-
-	if (gettimeofday(&tv, NULL))
-	{
-		write(2, "Error: gettimeofday failed\n", 28);
-		return (0);
-	}
-	return ((tv.tv_sec * (unsigned int)1000) + (tv.tv_usec / 1000));
-}
-
-unsigned int	get_time(t_dining_setup *dinner_data)
-{
-	return (get_time_ms() - dinner_data->start_dinner);
-}
 t_monitor	*init_monitor_data(t_monitor *monitor, t_philo *philo)
 {
 	monitor->philos = philo;
-	if (!safe_mutex_init(&monitor->check_death)
-		|| !safe_mutex_init(&monitor->death_notification))
+	if (!safe_mutex_init(&monitor->monitor_philo) || !safe_mutex_init(&monitor->print_status))
 		return (NULL);
 	return (monitor);
 }
