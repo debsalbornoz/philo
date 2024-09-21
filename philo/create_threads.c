@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/19 21:56:57 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:27:28 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void *monitor_routine(void *arg)
 	{
 		while (num_philos > i)
 		{
-			if (!philo_is_dead(&data->philo[i]))
-				return (0);
+			if (philo_is_dead(&data->philo[i]))
+				return (NULL);
 		
 			i++;
 		}

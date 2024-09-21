@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/19 20:02:19 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:53:57 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,10 @@ typedef struct s_monitor
 typedef struct s_philo
 {
 	pthread_t			philo;
-	int					index;
-	long int			last_meal;
-	int					number_of_meals;
+	_Atomic int					index;
+	_Atomic long int			last_meal;
+	_Atomic int					number_of_meals;
+	_Atomic int					is_satisfied;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	t_dining_setup		*dinner_info;
@@ -75,14 +76,14 @@ typedef struct s_philo
 
 typedef struct s_dining_setup
 {
-	int						philosophers;
-	int						n_forks;
-	int						number_of_meals;
-	long int				time_to_die;
-	long int				time_to_eat;
-	long int				time_to_sleep;
-	long int				start_dinner;
-	long int				end_dinner;
+	_Atomic int						philosophers;
+	_Atomic int						n_forks;
+	_Atomic int						number_of_meals;
+	_Atomic long int				time_to_die;
+	_Atomic long int				time_to_eat;
+	_Atomic long int				time_to_sleep;
+	_Atomic long int				start_dinner;
+	_Atomic long int				end_dinner;
 }	t_dining_setup;
 
 

@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:08:06 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/19 21:11:16 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:02:44 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char **argv, int argc)
 		dinner_data->number_of_meals = ft_atol(argv[5]);
 	else
 		dinner_data->number_of_meals = -1;
-	dinner_data->start_dinner = get_time_ms();
+	dinner_data->start_dinner = get_time_ms(); //antes de começar a rotina;
 }
 
 t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
@@ -44,6 +44,7 @@ t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
 		assign_forks(philo, i, n_philo, forks);
 		philo[i].number_of_meals = 0;
 		philo[i].monitor = monitor;
+		philo[i].is_satisfied = 0;
 		philo[i].last_meal = philo[i].dinner_info->start_dinner;
 		i++;
 	}

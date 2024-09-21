@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_status_utils.c                               :+:      :+:    :+:   */
+/*   print_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 14:48:19 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/19 19:59:55 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:44:20 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,29 @@ void print_actions(long int time, int philo_index, char *action, t_philo *philo)
 	char *ft_time;
 	char *str;
 	char *i;
+	int	len;
 
-	ft_time = ft_itoa(time);
-	i = ft_itoa((long int)philo_index);
-	str = malloc((ft_strlen(ft_time)) + ft_strlen(i) + ft_strlen(action) + 4 * sizeof(char));
-	free(ft_time);
-	ft_strlcat(str, " ", ft_strlen(ft_time) + 2);
-	ft_strlcat(str, i, ft_strlen(str) + ft_strlen(i) + 1 );
-	free(i);
-	ft_strlcat(str, " ", ft_strlen(str) + 2);
-	ft_strlcat(str, action, ft_strlen(str) + ft_strlen(action) + 1);
-	ft_strlcat(str, "\n", ft_strlen(str) + 2);
-	if (!philo_is_dead(philo) && safe_mutex_lock(&philo->monitor->print_status))
+	if (safe_mutex_lock(&philo->monitor->print_status))
 	{
-		ft_putstr_fd(str, 1);
-		free(str);
-		safe_mutex_unlock(&philo->monitor->print_status);
+		ft_time = ft_itoa(time);
+		i = ft_itoa((long int)philo_index);
+		len = ft_strlen(ft_time) + ft_strlen(i) + ft_strlen(action) + 5;
+	
+		str = malloc(len * sizeof(char));
+		str[0] = '\0';
+		ft_strlcat(str, ft_time, ft_strlen(ft_time) + 1);
+		ft_strlcat(str, " ", ft_strlen(ft_time) + 2);
+		ft_strlcat(str, i, ft_strlen(str) + ft_strlen(i) + 1 );
+		ft_strlcat(str, action, ft_strlen(str) + ft_strlen(action) + 1);
+		if (!philo_is_dead(philo))
+		{
+			ft_putstr_fd(str, 1);
+			free(str);
+		}
+			safe_mutex_unlock(&philo->monitor->print_status);
 	}
 }
+
 
 static int get_digits(long int nbr)
 {
