@@ -6,13 +6,11 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:08:06 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/21 20:02:44 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 23:04:39 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdint.h>
-
 
 void	configure_dining_parameters(t_dining_setup *dinner_data,
 char **argv, int argc)

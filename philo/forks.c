@@ -6,11 +6,12 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:28:59 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/21 22:12:32 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 23:05:25 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
 
 pthread_mutex_t	*initialize_forks(pthread_mutex_t *forks,
 	t_dining_setup	*dinner_data)

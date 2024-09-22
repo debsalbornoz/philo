@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 14:48:19 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/21 20:44:20 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 23:01:24 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ int	ft_strlcat(char *dst, char *src, int size)
 	dst[i] = '\0'; 
 	return (dst_len + src_len);
 }
-
 
 void	ft_putstr_fd(char *s, int fd)
 {

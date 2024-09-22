@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:41:46 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/19 20:01:20 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 22:55:40 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ int	main(int argc, char **argv)
 		return (FALSE);
 	configure_dining_parameters(&dinner_data, argv, argc);
 	if (!initialize_forks(forks, &dinner_data) 
-		|| !initialize_philo_data(&dinner_data, philo, forks, &monitor)
-			|| !init_monitor_data(&monitor, philo) || !initialize_data(&data, &dinner_data, philo, &monitor)
+			|| !initialize_philo_data(&dinner_data, philo, forks, &monitor)
+			|| !init_monitor_data(&monitor, philo)
+			|| !initialize_data(&data, &dinner_data, philo, &monitor)
 			|| !initialize_threads(&data, philo, &dinner_data, &monitor))
 		return (FALSE);
 }

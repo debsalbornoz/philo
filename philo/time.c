@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:21:21 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/19 21:47:43 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 22:59:47 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ unsigned int	get_time_ms(void)
 
 unsigned int	get_time(t_dining_setup *dinner_data)
 {
-	long int	time1;
-	long int	time2;
+	long int	current_time;
+	long int	start_dinner;
 	
-	time1 = get_time_ms();
-	time2 = dinner_data->start_dinner;
+	current_time = get_time_ms();
+	start_dinner = dinner_data->start_dinner;
 
-	return (time1 - time2);
+	return (current_time - start_dinner);
 }

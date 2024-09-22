@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/21 21:41:23 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 23:52:11 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,65 +86,62 @@ typedef struct s_dining_setup
 	_Atomic long int				end_dinner;
 }	t_dining_setup;
 
+//actions.c
+void			process_philo_thinking(t_philo	*philo);
+int				process_philo_eating(t_philo *philo);
+int				handle_eat(t_philo *philo);
+void			process_philo_sleeping(t_philo *philo);
 
-//init_data.c
-
-t_monitor		*init_monitor_data(t_monitor *monitor, t_philo *philo);
-unsigned int		get_time_ms(void);
-unsigned int		get_time(t_dining_setup *dinner_data);
-t_philo			*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
-					pthread_mutex_t *forks, t_monitor *monitor);
-int				initialize_dinner_data(t_dining_setup *dinner_data, t_philo *philo,
-					pthread_mutex_t *forks, t_monitor *monitor);
-void			configure_dining_parameters(t_dining_setup *dinner_data,
-					char **argv, int argc);
-t_data			*initialize_data(t_data *data, t_dining_setup *dinner_data, t_philo *philo, t_monitor *monitor);
 //create_threads.c
-
-int				philo_is_dead(t_philo *philo);
-int				initialize_threads(t_data *data, t_philo *philo, t_dining_setup	*dinner_data, t_monitor *monitor);
-void			*philo_routine(void *arg);
-int 			process_philo_dining(t_philo *philo);
-//mutex.c
-int					safe_mutex_lock(pthread_mutex_t *mutex);
-int					safe_mutex_unlock(pthread_mutex_t *mutex);
-int					safe_mutex_init(pthread_mutex_t *mutex);
-int					safe_mutex_destroy(pthread_mutex_t *mutex);
-
-//philo.c
-int					process_even_philo_eating(t_philo *philo);
-int					process_odd_philo_eating(t_philo *philo);
-int					process_odd_philosopher_eating(t_philo *philo);
-void				process_philo_sleeping(t_philo *philo);
-void				process_philo_thinking(t_philo	*philo);
-int					check_philo_state(t_philo *philo);
-int					process_philo_eating(t_philo *philo);
-//utils.c
-int					is_digit(char c);
-int					ft_strlen(char *str);
-void				ft_putstr_fd(char *str, int fd);
-long int			ft_atol(const char *str);
-char				*ft_itoa(long int n);
-int					ft_strlcat(char *dst, char *src, int size);
-//validate_args.c
-int					validate_args(int argc, char **argv);
-int					is_numeric_arg(const char *str);
-int					is_maxmin_int(char *str);
-int					is_negative_nbr(char *argv);
-int					max_n_philo(char *philos);
+int				initialize_threads(t_data *data, t_philo *philo, t_dining_setup *dinner_data, t_monitor *monitor);
 
 //forks.c
-void	assign_forks(t_philo *philo, int i, int n_philo, pthread_mutex_t *forks);
 pthread_mutex_t	*initialize_forks(pthread_mutex_t *forks,
-	t_dining_setup	*dinner_data);
+					t_dining_setup	*dinner_data);
+void			assign_forks(t_philo *philo, int i, int n_philo, pthread_mutex_t *forks);
 
-//handle_mutexes.c
-int	initialize_mutexes(t_mutexes *mutexes);
+//init_data.c
+void			configure_dining_parameters(t_dining_setup *dinner_data,
+					char **argv, int argc);
+t_philo			*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
+					pthread_mutex_t *forks, t_monitor *monitor);
+t_monitor		*init_monitor_data(t_monitor *monitor, t_philo *philo);
+t_data			*initialize_data(t_data *data, t_dining_setup *dinner_data, t_philo *philo, t_monitor *monitor);
 
-void	print_actions(long int time, int philo_index, char *action, t_philo *philo);
-int			check_meals(t_philo *philo);
-int	handle_eat(t_philo *philo);
-int	is_satisfied(t_philo *philo);
-int	all_philos_safisfied(t_data *data);
+//monitor_routine.c
+int				philo_is_dead(t_philo *philo);
+void			*monitor_routine(void *arg);
+int				all_philos_safisfied(t_data *data);
 
+//mutex.c
+int				safe_mutex_init(pthread_mutex_t *mutex);
+int				safe_mutex_lock(pthread_mutex_t *mutex);
+int				safe_mutex_unlock(pthread_mutex_t *mutex);
+int				safe_mutex_destroy(pthread_mutex_t *mutex);
+
+//philo_routine.c
+void			*philo_routine(void *arg);
+int				is_satisfied(t_philo *philo);
+//print_actions.c
+void			print_actions(long int time, int philo_index, char *action, t_philo *philo);
+char			*ft_itoa(long int n);
+int				ft_strlcat(char *dst, char *src, int size);
+void			ft_putstr_fd(char *s, int fd);
+
+//time.c
+unsigned int	get_time_ms(void);
+unsigned int	get_time(t_dining_setup *dinner_data);
+
+//utils.c
+int				is_digit(char c);
+int				ft_strlen(char *str);
+long int		ft_atol(const char *str);
+
+//validate_args.c
+
+int				validate_args(int argc, char **argv);
+int				max_n_philo(char *philos);
+int				is_numeric_arg(const char *str);
+int				is_maxmin_int(char *str);
+int				is_negative_nbr(char *str);
 #endif

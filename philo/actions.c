@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:30:53 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/21 22:18:31 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 23:52:32 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <unistd.h>
 
-int	handle_eat(t_philo *philo);
+
+
+void	process_philo_thinking(t_philo	*philo)
+{
+	if (!philo_is_dead(philo) && !is_satisfied(philo)) {
+		print_actions(get_time(philo->dinner_info), philo->index, " is thinking\n", philo);
+		usleep(200);
+	}
+	else
+		return ;
+}
 
 int	process_philo_eating(t_philo *philo)
 {
@@ -37,7 +46,6 @@ int	process_philo_eating(t_philo *philo)
 		{
 			if (philo->right_fork != NULL)
 			{
-				printf("chega aqui?\n");
 				if (safe_mutex_lock(second_fork))
 				{
 					print_actions(get_time(philo->dinner_info), philo->index, " is taking fork\n", philo);
@@ -73,16 +81,6 @@ int	handle_eat(t_philo *philo)
 		usleep(philo->dinner_info->time_to_eat * 1000);
 	}
 	return (1);
-}
-
-void	process_philo_thinking(t_philo	*philo)
-{
-	if (!philo_is_dead(philo) && !is_satisfied(philo)) {
-		print_actions(get_time(philo->dinner_info), philo->index, " is thinking\n", philo);
-		usleep(200);
-	}
-	else
-		return ;
 }
 
 void	process_philo_sleeping(t_philo *philo)
