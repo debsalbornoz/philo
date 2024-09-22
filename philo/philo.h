@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/22 17:42:18 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/22 18:08:44 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ typedef struct s_data
 
 //actions.c
 void			process_philo_thinking(t_philo	*philo);
-int				process_philo_eating(t_philo *philo);
+int				process_even_philo_eating(t_philo *philo);
+int				process_odd_philo_eating(t_philo *philo);
 int				handle_eat(t_philo *philo);
 void			process_philo_sleeping(t_philo *philo);
 
@@ -107,8 +108,7 @@ void			configure_dining_parameters(t_data *dinner_data,
 					int argc, char **argv);
 t_philo			*initialize_philo_data(t_data *data);
 t_monitor		*init_monitor_data(t_data *dinner_data);
-t_data			*initialize_data(t_data *data, t_dining_setup *dinner_data,
-					t_philo *philo, t_monitor *monitor);
+int				start_dinner(t_data *dinner_data);
 
 //monitor_routine.c
 int				philo_is_dead(t_philo *philo);
