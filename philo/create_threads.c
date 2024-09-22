@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/21 21:50:38 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 22:02:53 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ void *monitor_routine(void *arg)
 				return (NULL);
 			}
 			if (philo_is_dead(&data->philo[i]))
+			{
+				printf("chega aqui?\n");
 				return (NULL);
-		
+			}
 			i++;
 		}
 		i = 0;
