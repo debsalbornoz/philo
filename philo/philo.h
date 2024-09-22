@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/21 23:52:11 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/22 00:04:03 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,20 +93,23 @@ int				handle_eat(t_philo *philo);
 void			process_philo_sleeping(t_philo *philo);
 
 //create_threads.c
-int				initialize_threads(t_data *data, t_philo *philo, t_dining_setup *dinner_data, t_monitor *monitor);
+int				initialize_threads(t_data *data, t_philo *philo,
+					t_dining_setup *dinner_data, t_monitor *monitor);
 
 //forks.c
 pthread_mutex_t	*initialize_forks(pthread_mutex_t *forks,
 					t_dining_setup	*dinner_data);
-void			assign_forks(t_philo *philo, int i, int n_philo, pthread_mutex_t *forks);
+void			assign_forks(t_philo *philo, int i,
+					int n_philo, pthread_mutex_t *forks);
 
 //init_data.c
 void			configure_dining_parameters(t_dining_setup *dinner_data,
 					char **argv, int argc);
-t_philo			*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
-					pthread_mutex_t *forks, t_monitor *monitor);
+t_philo			*initialize_philo_data(t_dining_setup	*dinner_data,
+					t_philo *philo, pthread_mutex_t *forks, t_monitor *monitor);
 t_monitor		*init_monitor_data(t_monitor *monitor, t_philo *philo);
-t_data			*initialize_data(t_data *data, t_dining_setup *dinner_data, t_philo *philo, t_monitor *monitor);
+t_data			*initialize_data(t_data *data, t_dining_setup *dinner_data,
+					t_philo *philo, t_monitor *monitor);
 
 //monitor_routine.c
 int				philo_is_dead(t_philo *philo);
@@ -123,7 +126,8 @@ int				safe_mutex_destroy(pthread_mutex_t *mutex);
 void			*philo_routine(void *arg);
 int				is_satisfied(t_philo *philo);
 //print_actions.c
-void			print_actions(long int time, int philo_index, char *action, t_philo *philo);
+void			print_actions(long int time, char *action, t_philo *philo);
+int				get_digits(long int nbr);
 char			*ft_itoa(long int n);
 int				ft_strlcat(char *dst, char *src, int size);
 void			ft_putstr_fd(char *s, int fd);

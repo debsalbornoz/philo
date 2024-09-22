@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:21:21 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/21 22:59:47 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 23:56:10 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 unsigned int	get_time_ms(void)
 {
 	struct timeval	tv;
-	
+
 	if (gettimeofday(&tv, NULL))
 	{
 		ft_putstr_fd("Error\n", 2);
@@ -28,9 +28,8 @@ unsigned int	get_time(t_dining_setup *dinner_data)
 {
 	long int	current_time;
 	long int	start_dinner;
-	
+
 	current_time = get_time_ms();
 	start_dinner = dinner_data->start_dinner;
-
 	return (current_time - start_dinner);
 }

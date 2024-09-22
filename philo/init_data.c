@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 11:08:06 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/21 23:04:39 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 23:59:49 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char **argv, int argc)
 	dinner_data->n_forks = ft_atol(argv[1]);
 	dinner_data->time_to_die = ft_atol(argv[2]);
 	dinner_data->time_to_eat = ft_atol(argv[3]);
-	dinner_data->time_to_sleep = ft_atol( argv[4]);
+	dinner_data->time_to_sleep = ft_atol(argv[4]);
 	if (argc == 6)
 		dinner_data->number_of_meals = ft_atol(argv[5]);
 	else
@@ -53,12 +53,14 @@ t_philo	*initialize_philo_data(t_dining_setup	*dinner_data, t_philo *philo,
 t_monitor	*init_monitor_data(t_monitor *monitor, t_philo *philo)
 {
 	monitor->philos = philo;
-	if (!safe_mutex_init(&monitor->monitor_philo) || !safe_mutex_init(&monitor->print_status))
+	if (!safe_mutex_init(&monitor->monitor_philo)
+		|| !safe_mutex_init(&monitor->print_status))
 		return (NULL);
 	return (monitor);
 }
 
-t_data	*initialize_data(t_data *data, t_dining_setup *dinner_data, t_philo *philo, t_monitor *monitor)
+t_data	*initialize_data(t_data *data, t_dining_setup *dinner_data,
+	t_philo *philo, t_monitor *monitor)
 {
 	data->dinner_data = dinner_data;
 	data->philo = philo;

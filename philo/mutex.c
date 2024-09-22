@@ -6,12 +6,11 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 20:42:52 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/21 23:03:27 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 23:58:14 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 int	safe_mutex_init(pthread_mutex_t *mutex)
 {

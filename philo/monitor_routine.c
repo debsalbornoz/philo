@@ -6,18 +6,18 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 22:56:28 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/21 23:52:29 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 23:59:03 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void *monitor_routine(void *arg)
+void	*monitor_routine(void *arg)
 {
 	t_data	*data;
 	int		num_philos;
 	int		i;
-	
+
 	data = (t_data *)arg;
 	num_philos = data->dinner_data->philosophers;
 	i = 0;
@@ -43,16 +43,17 @@ void *monitor_routine(void *arg)
 	}
 	return (NULL);
 }
-int philo_is_dead(t_philo *philo)
-{
 
+int	philo_is_dead(t_philo *philo)
+{
 	pthread_mutex_lock(&philo->monitor->monitor_philo);
 	if (philo->monitor->death_status == 1)
 	{
 		pthread_mutex_unlock(&philo->monitor->monitor_philo);
 		return (1);
 	}
-	if (get_time_ms() - philo->last_meal > philo->dinner_info->time_to_die && !is_satisfied(philo))
+	if (get_time_ms() - philo->last_meal > philo->dinner_info->time_to_die
+		&& !is_satisfied(philo))
 	{
 		philo->monitor->death_status = 1;
 		pthread_mutex_unlock(&philo->monitor->monitor_philo);
