@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/22 00:13:00 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:34:59 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,4 @@ void	*philo_routine(void *arg)
 		process_philo_sleeping(philo);
 	}
 	return (NULL);
-}
-
-int	is_satisfied(t_philo *philo)
-{
-	if (philo->is_satisfied == 1)
-		return (1);
-	return (0);
 }

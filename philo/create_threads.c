@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/22 00:00:26 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:40:18 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	initialize_threads(t_data *data, t_philo *philo,
 	int	num_philos;
 
 	num_philos = dinner_data->philosophers;
+	dinner_data->start_dinner = get_time_ms();
 	i = 0;
 	while (i < num_philos)
 	{

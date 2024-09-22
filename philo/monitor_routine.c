@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 22:56:28 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/22 00:12:46 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:38:05 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,14 @@ void	*monitor_routine(void *arg)
 	while (1)
 	{
 		if (all_philos_safisfied(data))
-		{
 			return (NULL);
-		}
 		while (num_philos > i)
 		{
 			if (all_philos_safisfied(data))
 			{
 				return (NULL);
 			}
-			if (philo_is_dead(&data->philo[i]))
+			if (philo_is_dead(&data->philo[i]) || all_philos_safisfied(data))
 			{
 				return (NULL);
 			}
