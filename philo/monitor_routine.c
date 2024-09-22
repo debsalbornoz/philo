@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 22:56:28 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/22 16:38:05 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/22 17:45:07 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*monitor_routine(void *arg)
 	int		i;
 
 	data = (t_data *)arg;
-	num_philos = data->dinner_data->philosophers;
+	num_philos = data->setup->philosophers;
 	i = 0;
 	while (1)
 	{
@@ -62,16 +62,16 @@ int	philo_is_dead(t_philo *philo)
 	return (0);
 }
 
-int	all_philos_safisfied(t_data *data)
+int	all_philos_safisfied(t_data *dinner_data)
 {
 	int	n_philos;
 	int	i;
 
-	n_philos = data->dinner_data->philosophers;
+	n_philos = dinner_data->setup->philosophers;
 	i = 0;
 	while (n_philos > i)
 	{
-		if (data->philo[i].is_satisfied == 0)
+		if (dinner_data->philo[i].is_satisfied == 0)
 			return (0);
 		i++;
 	}	

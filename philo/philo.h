@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/22 00:09:40 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/22 17:42:18 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_dining_setup	t_dining_setup;
 typedef struct s_mutexes		t_mutexes;
 typedef struct s_monitor		t_monitor;
 typedef struct s_philo			t_philo;
+typedef struct s_data			t_data;
 
 enum	e_actions
 {
@@ -43,13 +44,6 @@ enum	e_mutex {
 	INIT,
 	DESTROY
 };
-
-typedef struct s_data
-{
-	t_monitor		*monitor;
-	t_philo			*philo;
-	t_dining_setup	*dinner_data;
-}	t_data;
 
 typedef struct s_monitor
 {
@@ -86,6 +80,14 @@ typedef struct s_dining_setup
 	_Atomic long int				end_dinner;
 }	t_dining_setup;
 
+typedef struct s_data
+{
+	t_monitor		monitor[1];
+	t_dining_setup	setup[1];
+	t_philo			philo[200];
+	pthread_mutex_t	forks[200];
+}	t_data;
+
 //actions.c
 void			process_philo_thinking(t_philo	*philo);
 int				process_philo_eating(t_philo *philo);
@@ -93,21 +95,18 @@ int				handle_eat(t_philo *philo);
 void			process_philo_sleeping(t_philo *philo);
 
 //create_threads.c
-int				initialize_threads(t_data *data, t_philo *philo,
-					t_dining_setup *dinner_data, t_monitor *monitor);
+int				initialize_threads(t_data *dinner_data);
 
 //forks.c
-pthread_mutex_t	*initialize_forks(pthread_mutex_t *forks,
-					t_dining_setup	*dinner_data);
+pthread_mutex_t	*initialize_forks(t_data *dinner_data);
 void			assign_forks(t_philo *philo, int i,
 					int n_philo, pthread_mutex_t *forks);
 
 //init_data.c
-void			configure_dining_parameters(t_dining_setup *dinner_data,
-					char **argv, int argc);
-t_philo			*initialize_philo_data(t_dining_setup	*dinner_data,
-					t_philo *philo, pthread_mutex_t *forks, t_monitor *monitor);
-t_monitor		*init_monitor_data(t_monitor *monitor, t_philo *philo);
+void			configure_dining_parameters(t_data *dinner_data,
+					int argc, char **argv);
+t_philo			*initialize_philo_data(t_data *data);
+t_monitor		*init_monitor_data(t_data *dinner_data);
 t_data			*initialize_data(t_data *data, t_dining_setup *dinner_data,
 					t_philo *philo, t_monitor *monitor);
 
