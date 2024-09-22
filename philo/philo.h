@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/22 00:04:03 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/22 00:09:40 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@
 # include <stdlib.h>
 # include <sys/time.h>
 
-typedef struct	s_dining_setup t_dining_setup;
-typedef struct	s_mutexes t_mutexes;
-typedef struct	s_monitor t_monitor;
-typedef struct	s_philo	t_philo;
+typedef struct s_dining_setup	t_dining_setup;
+typedef struct s_mutexes		t_mutexes;
+typedef struct s_monitor		t_monitor;
+typedef struct s_philo			t_philo;
 
 enum	e_actions
 {
@@ -49,7 +49,7 @@ typedef struct s_data
 	t_monitor		*monitor;
 	t_philo			*philo;
 	t_dining_setup	*dinner_data;
-} t_data;
+}	t_data;
 
 typedef struct s_monitor
 {
@@ -63,10 +63,10 @@ typedef struct s_monitor
 typedef struct s_philo
 {
 	pthread_t			philo;
-	_Atomic int					index;
-	_Atomic long int			last_meal;
-	_Atomic int					number_of_meals;
-	_Atomic int					is_satisfied;
+	_Atomic int			index;
+	_Atomic long int	last_meal;
+	_Atomic int			number_of_meals;
+	_Atomic int			is_satisfied;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	t_dining_setup		*dinner_info;

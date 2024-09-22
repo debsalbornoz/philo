@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 14:04:29 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/21 23:58:11 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/22 00:13:00 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (!philo_is_dead(philo) || !is_satisfied(philo))
+	while (!philo_is_dead(philo) || philo->is_satisfied)
 	{
 		process_philo_thinking(philo);
 		if (!process_philo_eating(philo))

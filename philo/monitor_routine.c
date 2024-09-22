@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 22:56:28 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/21 23:59:03 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/22 00:12:46 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	philo_is_dead(t_philo *philo)
 		return (1);
 	}
 	if (get_time_ms() - philo->last_meal > philo->dinner_info->time_to_die
-		&& !is_satisfied(philo))
+		&& !philo->is_satisfied)
 	{
 		philo->monitor->death_status = 1;
 		pthread_mutex_unlock(&philo->monitor->monitor_philo);
@@ -73,7 +73,7 @@ int	all_philos_safisfied(t_data *data)
 	i = 0;
 	while (n_philos > i)
 	{
-		if (!is_satisfied(&data->philo[i]))
+		if (data->philo[i].is_satisfied == 0)
 			return (0);
 		i++;
 	}	
