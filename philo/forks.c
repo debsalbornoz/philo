@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 18:28:59 by dlamark-          #+#    #+#             */
-/*   Updated: 2024/09/13 18:06:46 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/21 21:27:06 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ pthread_mutex_t	*initialize_forks(pthread_mutex_t *forks,
 
 void	assign_forks(t_philo *philo, int i, int n_philo, pthread_mutex_t *forks)
 {
-	
+//	if (n_philo == 1)
+//	{
+//		philo[i].left_fork = &
+//	}
 	if (i == n_philo -1)
 	{
 		philo[i].left_fork = &forks[i];
@@ -46,3 +49,4 @@ void	assign_forks(t_philo *philo, int i, int n_philo, pthread_mutex_t *forks)
 		philo[i].right_fork = &forks[i + 1];
 	}
 }
+

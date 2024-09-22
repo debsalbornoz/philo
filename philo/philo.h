@@ -6,7 +6,7 @@
 /*   By: dlamark- <dlamark-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:37:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/09/21 20:53:57 by dlamark-         ###   ########.fr       */
+/*   Updated: 2024/09/21 21:41:23 by dlamark-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,4 +144,7 @@ int	initialize_mutexes(t_mutexes *mutexes);
 void	print_actions(long int time, int philo_index, char *action, t_philo *philo);
 int			check_meals(t_philo *philo);
 int	handle_eat(t_philo *philo);
+int	is_satisfied(t_philo *philo);
+int	all_philos_safisfied(t_data *data);
+
 #endif
