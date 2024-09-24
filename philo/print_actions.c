@@ -31,10 +31,8 @@ void	print_actions(long int time, char *action, t_philo *philo)
 		ft_strlcat(str, i, ft_strlen(str) + ft_strlen(i) + 1);
 		ft_strlcat(str, action, ft_strlen(str) + ft_strlen(action) + 1);
 		if (!philo_is_dead(philo))
-		{
 			ft_putstr_fd(str, 1);
-			free(str);
-		}
+		free(str);
 		safe_mutex_unlock(&philo->monitor->print_status);
 	}
 }

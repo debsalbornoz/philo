@@ -95,8 +95,10 @@ int				process_odd_philo_eating(t_philo *philo);
 int				handle_eat(t_philo *philo);
 void			process_philo_sleeping(t_philo *philo);
 
-//create_threads.c
+//threads.c
 int				initialize_threads(t_data *dinner_data);
+int				create_philo_threads(t_data *dinner_data, int num_philos);
+int				join_philo_threads(t_data *dinner_data, int num_philos);
 
 //forks.c
 pthread_mutex_t	*initialize_forks(t_data *dinner_data);
@@ -124,6 +126,9 @@ int				safe_mutex_destroy(pthread_mutex_t *mutex);
 //philo_routine.c
 void			*philo_routine(void *arg);
 int				is_satisfied(t_philo *philo);
+int				process_philo_eating(t_philo *philo);
+void			*one_philo_routine(void *arg);
+
 //print_actions.c
 void			print_actions(long int time, char *action, t_philo *philo);
 int				get_digits(long int nbr);
